@@ -1,0 +1,116 @@
+body {
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    background-color: #d4d3d3;
+}
+
+.nav {
+    background-color: #ffffff;
+    overflow: hidden;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding: 10px 20px;
+
+}
+.srch {
+    display: flex;
+    align-items: center;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 5px;
+    width: 25%;
+}
+.srch input[type="text"] {
+    border: none;
+    outline: none;
+    padding: 5px;
+    width: 90%;
+}
+.srch button {
+    background-color: transparent;
+    border: none;    
+    padding: 5px 10px;
+    cursor: pointer;
+    size: 50px;
+}
+
+.buttons {
+    display: flex;
+    gap: 10px;
+    
+}
+.buttons button {
+    background-color: transparent;
+    color: Black;
+    padding: 10px 15px;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+}
+.buttons button:hover {
+    transition: 500ms;
+    color: rgb(87, 87, 243);
+}
+.Main{
+    align-self: center;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    padding: 0;
+    margin: 0;
+    flex-direction: column;
+}
+.Intro{
+    width: 80%;
+    height: 500px;
+    background-image: url(Images/HD-Fitness-Backgrounds-82723246.jpg);
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+.Intro h1{
+    margin-left: 30px;
+    color: white;
+    padding-top: 50px;
+    font-size: 50px;
+}
+.Intro h2{
+    margin-left: 30px;
+    color: white;
+    font-size: 30px;
+}
+.Intro button{
+    margin-left: 30px;
+    border: none;
+    padding: 10px 25px; 
+    border-radius: 5px;
+    background-color: rgb(87, 87, 243);
+    color: white;
+    font-size: large;
+    font-weight: bold;
+}
+.Intro button:hover{
+    background-color: rgb(65, 65, 179);
+}
+.Products{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+    width: 80%;
+    margin-top: 20px;
+}
+.Products div{
+    display: flex;
+    justify-content: space-between;
+    background-color: white;
+    width: 200px;
+    height: 300px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+.Product div:hover{
+    transform: scale(1.05);
+    transition: 300ms;
+}       
