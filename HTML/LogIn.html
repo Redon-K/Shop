@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <link rel="stylesheet" href="../CSS/LogIn.css" />
+  <title>Apex Fuel — Log In</title>
+</head>
+<body>
+  <main>
+    <section class="auth-card" role="main">
+      <img class="brand-logo" src="../Images/Logo.png" alt="Apex Fuel logo">
+
+      <h1 class="title">Log in to Apex Fuel</h1>
+
+      <form id="login-form" action="#" method="post" novalidate>
+        <div class="form-row">
+          <label for="email">Email</label>
+          <input id="email" name="email" type="email" autocomplete="email" required>
+        </div>
+
+        <div class="form-row">
+          <label for="password">Password</label>
+          <input id="password" name="password" type="password" autocomplete="current-password" required>
+        </div>
+
+        <div class="form-row helper-row">
+          <label class="remember"><input id="remember" name="remember" type="checkbox"> Remember me</label>
+        </div>
+
+        <div class="actions">
+          <button class="btn" type="submit">Log in</button>
+          <a class="link-muted" href="Home.html">Back to shop</a>
+        </div>
+      </form>
+
+      <p class="signup-cta">Don't have an account? <a class="link-muted" href="Register.html">Sign up</a></p>
+    </section>
+  </main>
+
+
+
+  <script src="../JS/Login.js"></script>
+</body>
+</html>

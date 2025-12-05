@@ -1,0 +1,72 @@
+/* ...existing code... */
+:root{
+  --accent:#5757f3;
+  --bg:#f4f6fa;
+  --card:#ffffff;
+  --muted:#666;
+  --radius:12px;
+  --max-width:520px;
+}
+
+*{box-sizing:border-box}
+html,body{height:100%;margin:0;font-family:Inter, Arial, Helvetica, sans-serif;background:var(--bg);color:#222; background-image: url("/Images/LoginBack.jpg"); background-size: cover;  } 
+main{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px}
+
+/* Card */
+.auth-card{
+  width:100%;
+  max-width:var(--max-width);
+  background:var(--card);
+  border-radius:var(--radius);
+  box-shadow:0 10px 30px rgba(20,20,60,0.06);
+  padding:32px;
+  text-align:left;
+}
+
+/* Logo */
+.brand-logo{
+  display:block;
+  margin:0 auto 18px auto;
+  width:120px;
+  max-width:36%;
+}
+
+/* Headings & text */
+.title{margin:0 0 6px 0;font-size:20px;text-align:center}
+.lead{margin:0 0 18px 0;color:var(--muted);font-size:14px;text-align:center}
+
+/* Form fields */
+.form-row{margin-bottom:12px}
+label{display:block;margin-bottom:8px;font-size:13px;color:#333}
+input[type="email"], input[type="password"]{
+  width:100%;
+  padding:10px 12px;
+  border:1px solid #e7e7ee;
+  border-radius:10px;
+  font-size:14px;
+  background:#fff;
+}
+
+/* helper row */
+.helper-row{display:flex;align-items:center;justify-content:space-between;gap:10px;font-size:13px;color:var(--muted)}
+.remember{display:flex;align-items:center;gap:8px}
+
+/* Actions */
+.actions{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:14px}
+.btn{background:var(--accent);color:#fff;border:none;padding:10px 18px;border-radius:10px;cursor:pointer;font-weight:600}
+.link-muted{color:var(--muted);text-decoration:none;font-size:14px}
+
+/* Error */
+.error{color:#c43;font-size:13px;margin-top:10px;display:none}
+
+/* Sign up CTA */
+.signup-cta{margin-top:14px;font-size:13px;color:var(--muted);text-align:center}
+
+/* Responsive */
+@media (max-width:480px){
+  .auth-card{padding:20px}
+  .brand-logo{width:96px}
+  .actions{flex-direction:column;align-items:stretch}
+  .link-muted{text-align:center}
+}
+/* ...existing code... */

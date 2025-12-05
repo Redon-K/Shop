@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="../CSS/Home.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Apex Fuel</title>
+</head>
+<body>
+    <!--Navigation bar-->
+    <header>
+        <div class="nav">
+            <img id="logo" src="../Images/Logo.png" alt="Apex Fuel logo">
+            <form class="srch" action="">
+                <input type="text" name="SearchBar" id="SearchBar" placeholder="Search products...">
+                <button id="search" type="submit"><img src="../Images/search_24dp_000000_FILL0_wght400_GRAD0_opsz24.png" alt="search"></button>
+            </form>
+            <div class="buttons">
+                <button type="button">Protein</button>
+                <button type="button">Pre Workout</button>
+                <button type="button">Vitamins</button>
+                <button type="button">Supplements</button>
+
+                <button id="favorites" type="button"><img src="../Images/favorite_24dp_000000_FILL0_wght400_GRAD0_opsz24.png" alt="favorites"></button>
+                <button id="cart" type="button"><img src="../Images/shopping_cart_24dp_000000_FILL0_wght400_GRAD0_opsz24.png" alt="cart"></button>
+                <button id="account" type="button"><img src="../Images/account_circle_24dp_000000_FILL0_wght400_GRAD0_opsz24.png" alt="account"></button>
+            </div>
+        </div>
+    </header>
+
+    <div class="Main">
+        <div class="Intro">
+            <h1>APEX FUEL</h1>
+            <h2>ACHIEVE YOUR GOALS: <br> <b>BULK & DEFINE</b></h2>
+            <button id="shop-now" type="button">SHOP NOW</button>
+        </div>
+
+        <div class="Products">
+            <!-- Proteins part -->
+            <h3>Proteins</h3>
+            <div class="Proteins">
+                <div class="product-card" data-id="p1">
+                    <img src="../Images/Prote+na+whey+OPTIMUN+NUTRITION+Gold+Standard+chocolate+908+g-1159974388.jpg" alt="Whey Protein">
+                    <h3>Whey Protein</h3>
+                    <p>$29.99</p>
+                    <button class="add-to-cart" data-id="p1" type="button">Add to Cart</button>
+                </div>
+                <!-- duplicate product cards here as needed, keep class="add-to-cart" and data-id -->
+            </div>
+
+            <!-- Pre Workout part -->
+            <h3>Pre Workout</h3>
+            <div class="Pre"></div>
+
+            <!-- Vitamins part -->
+            <h3>Vitamins</h3>
+            <div class="Vitamins"></div>
+
+            <!-- Supplements part -->
+            <h3>Supplements</h3>
+            <div class="Supplements"></div>
+        </div>
+    </div>
+
+    <script src="../JS/Home.js"></script>
+</body>
+</html>
