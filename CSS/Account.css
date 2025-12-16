@@ -17,8 +17,11 @@
 body {
   margin: 0;
   min-height: 100vh;
-  background: radial-gradient(1200px 400px at 10% 10%, rgba(44,123,229,0.08), transparent),
-             linear-gradient(180deg,var(--bg-1),var(--bg-2));
+  /* Background image layer with a subtle dark overlay for contrast */
+  background-image: linear-gradient(rgba(11,17,32,0.55), rgba(11,17,32,0.55)), url("../Images/HD-Fitness-Backgrounds-82723246.jpg");
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
   padding: 48px 20px;
   color: #0b1220;
   -webkit-font-smoothing:antialiased;
@@ -32,7 +35,7 @@ body {
 
 /* Title */
 h1 {
-  color: #f8fafc;
+  color: lightblue;
   text-align: center;
   margin: 0 0 28px;
   font-weight: 600;
@@ -43,12 +46,19 @@ h1 {
 .profile-card {
   display: flex;
   gap: 32px;
-  background: var(--card-bg);
+  /* Darker translucent mask so the background shows through but the card reads darker */
+  background: rgba(8,12,20,0.78); /* dark navy/black tint */
+  /* slightly stronger accent border to separate from background */
+  border: 1px solid rgba(44,123,229,0.12);
   padding: 28px;
   border-radius: var(--radius);
-  box-shadow: var(--shadow);
+  /* remove heavy shadow per request; keep layout clean */
+  box-shadow: none;
   align-items: stretch;
   overflow: hidden;
+  /* subtle backdrop blur for a glass-like effect (optional; supported in modern browsers) */
+  backdrop-filter: blur(6px);
+  color: #f8fafc; /* light text inside the dark card */
 }
 
 /* Avatar / left column */
@@ -69,7 +79,7 @@ h1 {
   border-radius: 50%;
   overflow: hidden;
   box-shadow: 0 6px 18px rgba(12,20,32,0.18);
-  border: 6px solid rgba(255,255,255,0.85);
+  border: 6px solid rgba(255,255,255,0.95);
   background: linear-gradient(135deg, rgba(44,123,229,0.06), rgba(16,185,129,0.03));
 }
 
@@ -85,13 +95,13 @@ h1 {
 .profile-name {
   font-size: 1.25rem;
   font-weight: 700;
-  color: #0b1220;
+  color: #f8fafc;
   margin: 0;
 }
 
 .profile-title {
   font-size: 0.95rem;
-  color: var(--muted);
+  color: rgba(248,250,252,0.78);
   margin-top: 4px;
 }
 
@@ -171,7 +181,7 @@ button:active, .btn:active { transform: translateY(1px); }
 
 label {
   font-size: 0.83rem;
-  color: var(--muted);
+  color: rgba(248,250,252,0.78);
   margin-bottom: 6px;
 }
 
