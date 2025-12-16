@@ -19,12 +19,15 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  // Account button -> open login page in same folder as Home.html
-  const accountBtn = document.getElementById('account');
-  if (accountBtn) {
-    accountBtn.addEventListener('click', (e) => {
+  // Account navigation is handled by a normal link in the HTML markup.
+  // To avoid accidental automatic redirects, use a JS click handler that
+  // navigates only when the user actually clicks the icon.
+  const accountEl = document.getElementById('account');
+  if (accountEl) {
+    accountEl.addEventListener('click', (e) => {
       e.preventDefault();
-      window.location.href = 'LogIn.html';
+      const target = accountEl.getAttribute('data-target') || 'Account.html';
+      window.location.href = target;
     });
   }
 

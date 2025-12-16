@@ -1,12 +1,12 @@
 :root{
-  --bg-1: #0f1723;
-  --bg-2: #111827;
-  --card-bg: linear-gradient(180deg,#ffffff 0%, #fbfdff 100%);
-  --muted: #6b7280;
-  --accent: #2c7be5;
-  --accent-600: #1a5bb8;
-  --success: #10b981;
-  --glass: rgba(255,255,255,0.6);
+  --bg-1: Black;
+  --bg-2: DarkGray;
+  --card-bg: linear-gradient(180deg,#ffffff 0%, white 100%);
+  --muted: gray;
+  --accent: LightBlue;
+  --accent-600: Darkblue;
+  --success: LightGreen;
+  --glass: rgba(254,250,250,0.8);
   --radius: 12px;
   --shadow: 0 10px 30px rgba(2,6,23,0.6);
   font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
@@ -78,6 +78,7 @@ h1 {
   height: 100%;
   object-fit: cover;
   display: block;
+  transition: opacity .25s ease;
 }
 
 /* Name & title */
