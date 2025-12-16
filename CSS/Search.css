@@ -1,24 +1,111 @@
+:root{
+  --accent: #2c7be5; /* close to Account accent */
+  --card-bg-dark: rgba(8,12,20,0.78);
+  --card-border: rgba(44,123,229,0.12);
+  --muted-light: rgba(248,250,252,0.78);
+}
+
+/* Page background: use the SearchPicture.jpg from Images with a dark overlay for contrast */
+body {
+  background-image: linear-gradient(rgba(11,17,32,0.55), rgba(11,17,32,0.55)), url("../Images/SearchPicture.jpg");
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
+  min-height: 100vh;
+}
+
+/* Page container */
+.search-page {
+  color: #f8fafc;
+}
+
 .search-container {
-  margin-bottom: 30px;
+  margin-bottom: 20px;
 }
 
 #searchInput {
   width: 100%;
-  padding: 12px;
+  padding: 12px 14px;
   font-size: 16px;
-  border-radius: 6px;
-  border: 1px solid #ccc;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,0.06);
+  background: rgba(255,255,255,0.06);
+  color: #f8fafc;
+  outline: none;
+  box-shadow: none;
 }
+
+#searchInput::placeholder { color: rgba(248,250,252,0.6); }
 
 .product-list {
   display: flex;
   flex-direction: column;
-  gap: 15px;
+  gap: 16px;
 }
 
 .product {
+  background: var(--card-bg-dark);
+  padding: 16px;
+  border-radius: 8px;
+  border: 1px solid var(--card-border);
+  color: #f8fafc;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  transition: transform 200ms ease, box-shadow 200ms ease;
+}
+
+.product strong {
+  display: block;
+  font-size: 1.05rem;
+  margin-bottom: 6px;
+}
+
+.product div { color: var(--muted-light); }
+
+/* Hover effect similar to home product cards */
+.product:hover{
+  transform: scale(1.02);
+  box-shadow: 0 8px 20px rgba(2,6,23,0.5);
+}
+
+/* Add to cart button styling */
+.product .add-to-cart {
+  align-self: flex-start;
+  margin-top: 6px;
+  padding: 8px 12px;
+  background: var(--accent);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.product .add-to-cart:active { transform: translateY(1px); }
+
+/* Home-like product card style for Search results */
+.product-card {
   background: white;
-  padding: 15px;
-  border-radius: 6px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  overflow: hidden;
+  width: 250px;
+  display: inline-flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+.product-card img { width: 100%; height: 200px; object-fit: cover; display: block; }
+.product-card h3 { margin: 10px; font-size: 18px; color: #0b1220; }
+.product-card p { margin: 0 10px 10px; font-size: 16px; color: #0b1220; }
+.product-card .add-to-cart { margin: 10px; padding: 8px 16px; background-color: rgb(87, 87, 243); color: white; border: none; border-radius: 5px; cursor: pointer; }
+.product-card:hover { transform: scale(1.05); transition: 300ms; }
+
+/* Make product list wrap like the home page row */
+.product-list { display: flex; flex-wrap: wrap; gap: 16px; }
+
+/* small responsive tweaks */
+@media (max-width: 600px) {
+  #searchInput { font-size: 15px; padding: 10px 12px; }
+  .product { padding: 12px; }
 }
