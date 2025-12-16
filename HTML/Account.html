@@ -2,27 +2,45 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Protein Shop | Account</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Apex Account</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
 
-  <div class="account-container">
-    <h1>My Account</h1>
+  <div class="profile-container">
+    <h1>Apex Profile</h1>
 
     <div class="profile-card">
-      <label>
-        Full Name
-        <input type="text" id="name" />
-      </label>
+      <div class="avatar-section">
+        <img src="Images/AccountProfile.png" alt="Profile Image" id="avatar" loading="lazy" />
+        <input type="file" id="avatarInput" accept="image/*" />
+      </div>
 
-      <label>
-        Email
-        <input type="email" id="email" disabled />
-      </label>
+      <div class="form-section">
+        <label for="shopName">
+          <span class="label-text" data-key="shopName">Shop Name</span>
+          <input type="text" id="shopName" value="IronFuel Nutrition" />
+        </label>
 
-      <button id="saveBtn">Save Changes</button>
-      <button id="logoutBtn" class="logout">Logout</button>
+        <label for="email">
+          <span class="label-text">Email</span>
+          <input type="email" id="email" value="contact@ironfuel.com" />
+        </label>
+
+        <label for="phone">
+          <span class="label-text">Phone</span>
+          <input type="tel" id="phone" value="+123456789" />
+        </label>
+
+        <label for="address">
+          <span class="label-text">Address</span>
+          <textarea id="address">123 Muscle Street, Fit City</textarea>
+        </label>
+
+        <button id="saveBtn" type="button">Save Profile</button>
+        <p id="status"></p>
+      </div>
     </div>
   </div>
 

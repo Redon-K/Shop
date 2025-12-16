@@ -1,37 +1,20 @@
-// Fake logged-in user data
-const user = {
-  name: "John Doe",
-  email: "john@proteinshop.com"
-};
+const saveBtn = document.getElementById("saveBtn");
+const statusEl = document.getElementById("status");
+const avatarInput = document.getElementById("avatarInput");
+const avatar = document.getElementById("avatar");
 
-// Load user data on page load
-window.onload = () => {
-  const savedUser = JSON.parse(localStorage.getItem("user")) || user;
-  document.getElementById("name").value = savedUser.name;
-  document.getElementById("email").value = savedUser.email;
-};
+saveBtn.addEventListener("click", () => {
+  statusEl.textContent = "Profile saved successfully!";
+});
 
-// Save changes
-document.getElementById("saveBtn").addEventListener("click", () => {
-  const updatedName = document.getElementById("name").value;
-
-  if (updatedName.trim() === "") {
-    alert("Name cannot be empty");
-    return;
+avatarInput.addEventListener("change", () => {
+  const file = avatarInput.files[0];
+  if (file) {
+    const reader = new FileReader();
+    reader.onload = () => {
+      avatar.src = reader.result;
+    };
+    reader.readAsDataURL(file);
   }
-
-  const updatedUser = {
-    name: updatedName,
-    email: document.getElementById("email").value
-  };
-
-  localStorage.setItem("user", JSON.stringify(updatedUser));
-  alert("Profile updated successfully");
 });
 
-// Logout
-document.getElementById("logoutBtn").addEventListener("click", () => {
-  localStorage.removeItem("user");
-  alert("Logged out");
-  window.location.reload();
-});
