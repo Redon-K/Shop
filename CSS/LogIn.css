@@ -1,4 +1,3 @@
-/* ...existing code... */
 :root{
   --accent:#5757f3;
   --bg:#f4f6fa;
@@ -69,4 +68,3 @@ input[type="email"], input[type="password"]{
   .actions{flex-direction:column;align-items:stretch}
   .link-muted{text-align:center}
 }
-/* ...existing code... */
