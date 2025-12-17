@@ -9,9 +9,26 @@ body {
     background-repeat: no-repeat;
 }
 
+/* enable smooth scrolling on the Home page for in-page navigation */
+html { scroll-behavior: smooth; }
+
+/* ensure fixed nav doesn't cover target headings when jumping via anchors */
+#Proteins, #Pre, #Vitamins, #Supplements {
+    scroll-margin-top: 110px;
+}
+
+/* small highlight animation for user feedback when sliding to a section */
+.flash-target {
+    animation: flash-target 900ms ease forwards;
+}
+@keyframes flash-target {
+    0% { background-color: rgba(87,87,243,0.12); }
+    100% { background-color: transparent; }
+}
+
 .nav {
-    /* darker translucent nav so light text/icons are visible over the hero */
-    background: rgba(6,10,18,0.72);
+    /* less see-through: darker, nearly-opaque nav so header content is always readable */
+    background: rgba(6,10,18,0.95);
     color: #f8fafc;
     overflow: hidden;
     display: flex;
@@ -19,6 +36,15 @@ body {
     align-items: center;
     padding: 10px 20px;
     backdrop-filter: blur(4px);
+}
+/* animate nav sliding when hidden by JS */
+.nav {
+    transition: transform .28s cubic-bezier(.2,.9,.2,1), box-shadow .18s ease;
+    will-change: transform;
+}
+.nav.hidden {
+    transform: translateY(-120%);
+    box-shadow: none;
 }
 /* Position the site nav at the top so it's consistent across pages (Account, Home, etc.).
     Make it fixed to avoid it being pushed down by page padding; avoid overlapping
@@ -42,7 +68,8 @@ header + .Main {
 #logo {
     width: 100px;
     margin: 0;
-
+    /* indicate the logo is interactive (click/tapable) */
+    cursor: pointer;
 }
 .srch {
     display: flex;
@@ -85,6 +112,10 @@ header + .Main {
 .buttons .icon-link img {
     /* icons are black in the assets; invert for visibility on dark nav */
     filter: invert(1) brightness(1.4) contrast(1);
+    /* normalize icon sizes so favorites/cart/profile align */
+    width: 20px;
+    height: 20px;
+    display: block;
 }
 .buttons button {
     background-color: transparent;
@@ -102,13 +133,45 @@ header + .Main {
     background: rgba(255,255,255,0.06);
     transform: translateY(-2px);
 }
+.buttons .nav-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background-color: transparent;
+    color: #f8fafc;
+    padding: 8px 12px;
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    text-decoration: none;
+    transition: background-color .18s ease, transform .12s ease, color .12s ease;
+}
+.buttons .nav-link:hover {
+    background: rgba(255,255,255,0.06);
+    transform: translateY(-2px);
+    color: rgb(87,87,243);
+}
 .buttons .icon-link {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    padding: 10px 8px;
-    margin-top: -1px; /* nudge up 1px to visually align with other icon buttons */
+    /* make the anchor visually match the other nav buttons */
+    padding: 8px 12px;
+    margin-top: 0;
+    background-color: transparent;
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color .18s ease, transform .12s ease, color .12s ease;
 }
+.buttons .icon-link:hover {
+    background: rgba(255,255,255,0.06);
+    transform: translateY(-2px);
+}
+
 .buttons button:hover {
     transition: 500ms;
     color: rgb(87, 87, 243);
@@ -240,6 +303,41 @@ header + .Main {
     font-size: 14px;
     cursor: pointer;
     align-self: center;
+}
+
+/* Cart panel styles */
+.cart-panel {
+    position: fixed;
+    top: 72px; /* sit under nav */
+    right: 16px;
+    width: 340px;
+    max-width: calc(100% - 32px);
+    background: rgba(6,10,18,0.98);
+    color: #f8fafc;
+    border-radius: 10px;
+    box-shadow: 0 12px 40px rgba(2,6,23,0.45);
+    transform: translateX(110%);
+    transition: transform .26s cubic-bezier(.2,.9,.2,1), opacity .18s ease;
+    z-index: 1500;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+.cart-panel.open { transform: translateX(0); }
+.cart-panel .cart-header { display:flex; align-items:center; justify-content:space-between; padding:12px 14px; border-bottom:1px solid rgba(255,255,255,0.04); font-weight:700; }
+.cart-panel .cart-body { padding:10px 12px; flex:1; overflow:auto; }
+.cart-panel .cart-items { list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:8px; }
+.cart-panel .cart-item { display:flex; align-items:center; justify-content:space-between; gap:8px; padding:8px; background: rgba(255,255,255,0.02); border-radius:6px; }
+.cart-panel .ci-left { display:flex; flex-direction:column; }
+.cart-panel .ci-name { font-weight:700; }
+.cart-panel .ci-meta { font-size:13px; color:rgba(248,250,252,0.78); }
+.cart-panel .ci-remove { background:transparent; border: none; color: #f8fafc; text-decoration: underline; cursor:pointer; font-size:13px; }
+.cart-panel .cart-footer { padding:12px; border-top:1px solid rgba(255,255,255,0.04); display:flex; align-items:center; justify-content:space-between; gap:8px; }
+.cart-panel .cart-total-amount { font-weight:800; }
+.cart-panel .checkout { padding:8px 12px; border-radius:8px; border:none; background:rgb(87,87,243); color:white; cursor:pointer; }
+
+@media (max-width: 600px) {
+    .cart-panel { right: 8px; left: 8px; width: auto; max-width: none; top: 64px; }
 }
 
 /* optional: nicer scrollbar on WebKit for category bars */

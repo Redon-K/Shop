@@ -17,10 +17,10 @@
         <button id="search" type="submit"><img src="../Images/search_24dp_000000_FILL0_wght400_GRAD0_opsz24.png" alt="search"></button>
       </form>
       <div class="buttons">
-        <button type="button">Protein</button>
-        <button type="button">Pre Workout</button>
-        <button type="button">Vitamins</button>
-        <button type="button">Supplements</button>
+        <a class="nav-link" href="#Proteins">Protein</a>
+        <a class="nav-link" href="#Pre">Pre Workout</a>
+        <a class="nav-link" href="#Vitamins">Vitamins</a>
+        <a class="nav-link" href="#Supplements">Supplements</a>
 
         <button id="favorites" type="button"><img src="../Images/favorite_24dp_000000_FILL0_wght400_GRAD0_opsz24.png" alt="favorites"></button>
         <button id="cart" type="button"><img src="../Images/shopping_cart_24dp_000000_FILL0_wght400_GRAD0_opsz24.png" alt="cart"></button>
@@ -29,14 +29,76 @@
     </div>
   </header>
 
-  <main class="search-page" style="max-width:1000px;margin:24px auto;padding:0 20px;">
-    <div class="search-container">
-      <input id="searchInput" type="search" placeholder="Search products..." />
-    </div>
+  <main class="search-page" style="max-width:1200px;margin:24px auto;padding:0 20px;">
+    <div class="search-layout">
+      <aside class="search-sidebar" aria-label="Catalog filters">
+        <div class="search-controls">
+          <!-- compact sidebar search (keeps some distance from fixed nav) -->
+          <input id="sidebarSearch" type="search" placeholder="Search products..." aria-label="Search products" />
+        </div>
 
-    <section id="productList" class="product-list" aria-live="polite"></section>
+        <div class="catalog" aria-label="Product catalog filters">
+          <button id="clearSearchBtn" class="btn-clear catalog-clear" type="button" aria-label="Clear search">Clear</button>
+          <fieldset>
+            <legend>Catalog</legend>
+            <label><input type="checkbox" name="cat" value="Proteins" checked> Proteins</label>
+            <label><input type="checkbox" name="cat" value="Pre" checked> Pre Workout</label>
+            <label><input type="checkbox" name="cat" value="Vitamins" checked> Vitamins</label>
+            <label><input type="checkbox" name="cat" value="Supplements" checked> Supplements</label>
+            <hr />
+            <label><input type="checkbox" name="cat" value="Plant" checked> Plant Protein</label>
+            <label><input type="checkbox" name="cat" value="Creatine" checked> Creatine</label>
+            <label><input type="checkbox" name="cat" value="BCAA" checked> BCAA</label>
+            <label><input type="checkbox" name="cat" value="Omega" checked> Omega-3</label>
+          </fieldset>
+          <fieldset class="price-filters">
+            <legend>Price Range</legend>
+            <label><input type="radio" name="price" value="" checked> Any price</label>
+            <label><input type="radio" name="price" value="0-15"> Under $15</label>
+            <label><input type="radio" name="price" value="15-30"> $15 — $30</label>
+            <label><input type="radio" name="price" value="30-50"> $30 — $50</label>
+            <label><input type="radio" name="price" value="50-99999"> $50+</label>
+          </fieldset>
+        </div>
+      </aside>
+
+      <section class="search-results">
+        <div class="search-categories" style="margin-bottom:12px; display:flex; gap:12px; flex-wrap:wrap;">
+          <h4 id="Proteins" style="margin:8px 0 6px 0;color:#f8fafc;">Proteins</h4>
+          <h4 id="Pre" style="margin:8px 0 6px 0;color:#f8fafc;">Pre Workout</h4>
+          <h4 id="Vitamins" style="margin:8px 0 6px 0;color:#f8fafc;">Vitamins</h4>
+          <h4 id="Supplements" style="margin:8px 0 6px 0;color:#f8fafc;">Supplements</h4>
+        </div>
+
+        <div class="Products">
+          <h3 id="searchResultsTitle">Search Results <small id="resultCount" style="opacity:.85; font-weight:600;">(0)</small></h3>
+
+          <div class="category-block">
+            <h4 class="category-title" id="Proteins-heading" style="display:none">Proteins</h4>
+            <div id="ProteinsList" class="product-list" aria-live="polite"></div>
+          </div>
+
+          <div class="category-block">
+            <h4 class="category-title" id="Pre-heading" style="display:none">Pre Workout</h4>
+            <div id="PreList" class="product-list" aria-live="polite"></div>
+          </div>
+
+          <div class="category-block">
+            <h4 class="category-title" id="Vitamins-heading" style="display:none">Vitamins</h4>
+            <div id="VitaminsList" class="product-list" aria-live="polite"></div>
+          </div>
+
+          <div class="category-block">
+            <h4 class="category-title" id="Supplements-heading" style="display:none">Supplements</h4>
+            <div id="SupplementsList" class="product-list" aria-live="polite"></div>
+          </div>
+
+        </div>
+      </section>
+    </div>
   </main>
 
+  <script src="../JS/Home.js"></script>
   <script src="../JS/Search.js"></script>
 </body>
 </html>
