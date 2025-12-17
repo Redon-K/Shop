@@ -6,6 +6,7 @@ body {
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
+    padding-top: 60px;
 }
 
 /* enable smooth scrolling on the Home page for in-page navigation */
@@ -26,15 +27,15 @@ html { scroll-behavior: smooth; }
 }
 
 .nav {
-    /* less see-through: darker, nearly-opaque nav so header content is always readable */
-    background: rgba(6,10,18,0.95);
+    /* solid, opaque nav — completely blocks view behind it */
+    background: rgba(6,10,18,0.98);
     color: #f8fafc;
     overflow: hidden;
     display: flex;
     justify-content: space-around;
     align-items: center;
     padding: 10px 20px;
-    backdrop-filter: blur(4px);
+    box-sizing: border-box;
 }
 /* animate nav sliding when hidden by JS */
 .nav {

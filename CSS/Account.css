@@ -22,7 +22,7 @@ body {
   background-size: cover;
   background-position: center center;
   background-repeat: no-repeat;
-  padding: 48px 20px;
+  padding: 60px 20px 48px 20px;
   color: #0b1220;
   -webkit-font-smoothing:antialiased;
 }

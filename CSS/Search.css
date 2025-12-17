@@ -12,6 +12,7 @@ body {
   background-position: center center;
   background-repeat: no-repeat;
   min-height: 100vh;
+  padding-top: 60px;
 }
 
 /* Page container */

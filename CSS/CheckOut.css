@@ -1,4 +1,9 @@
 /* Checkout layout that matches the site's dark translucent card theme */
+body {
+  padding-top: 60px;
+  margin: 0;
+}
+
 :root {
   --card-bg: rgba(8,12,20,0.86);
   --card-border: rgba(255,255,255,0.04);
