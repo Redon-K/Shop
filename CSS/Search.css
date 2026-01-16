@@ -212,11 +212,11 @@ body {
 .catalog input[type="checkbox"] { width:14px; height:14px; }
 
 /* tighten product grid spacing and card size */
-.Products { gap: 14px; }
+.Products { gap: 14px; display: flex; flex-direction: row; flex-wrap: wrap; }
 .Products > div { gap: 12px; padding: 8px; }
 
 /* Results heading styling (match Home's section headings) */
-.Products > h3{
+#searchResultsTitle{
   margin: 0 0 12px 0;
   font-size: 18px;
   color: #f8fafc;

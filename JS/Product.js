@@ -44,7 +44,7 @@ function(){
   });
 
 
-
+  
   // Small toast feedback
   function showToast(msg){
     const t = document.createElement('div');
