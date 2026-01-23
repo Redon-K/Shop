@@ -19,14 +19,18 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  // Account navigation is handled by a normal link in the HTML markup.
-  // To avoid accidental automatic redirects, use a JS click handler that
-  // navigates only when the user actually clicks the icon.
+  // Account navigation - check login status and redirect accordingly
+  // If logged in, go to Account page; if not, go to Login page
   const accountEl = document.getElementById('account');
   if (accountEl) {
     accountEl.addEventListener('click', (e) => {
       e.preventDefault();
-      const target = accountEl.getAttribute('data-target') || 'Account.html';
+      // Check if user is logged in by looking for session cookie
+      const isLoggedIn = document.cookie.split(';').some(cookie => {
+        return cookie.trim().startsWith('user=') || cookie.trim().startsWith('PHPSESSID=');
+      });
+      
+      const target = isLoggedIn ? './Account.php' : './LogIn.php';
       window.location.href = target;
     });
   }

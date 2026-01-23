@@ -11,8 +11,8 @@
   <!-- Navigation bar (same as home) -->
   <header>
     <div class="nav">
-      <a href="Home.html"><img id="logo" src="../Images/Logo.png" alt="Apex Fuel logo"></a>
-      <form class="srch" action="Search.html" method="GET">
+      <a href="./Home.php"><img id="logo" src="../Images/Logo.png" alt="Apex Fuel logo"></a>
+      <form class="srch" action="./Search.php" method="GET">
         <input type="text" name="q" id="SearchBar" placeholder="Search products...">
         <button id="search" type="submit"><img src="../Images/search_24dp_000000_FILL0_wght400_GRAD0_opsz24.png" alt="search"></button>
       </form>
@@ -24,7 +24,7 @@
 
         <button id="favorites" type="button"><img src="../Images/favorite_24dp_000000_FILL0_wght400_GRAD0_opsz24.png" alt="favorites"></button>
         <button id="cart" type="button"><img src="../Images/shopping_cart_24dp_000000_FILL0_wght400_GRAD0_opsz24.png" alt="cart"></button>
-        <a id="account" href="#" data-target="Account.html" class="icon-link" aria-label="Account"><img src="../Images/account_circle_24dp_000000_FILL0_wght400_GRAD0_opsz24.png" alt="account"></a>
+        <a id="account" href="#" data-target="./Account.php" class="icon-link" aria-label="Account"><img src="../Images/account_circle_24dp_000000_FILL0_wght400_GRAD0_opsz24.png" alt="account"></a>
       </div>
     </div>
   </header>

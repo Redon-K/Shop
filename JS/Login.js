@@ -2,49 +2,40 @@ document.addEventListener('DOMContentLoaded', () => {
   const form = document.getElementById('login-form');
   if (!form) return;
 
-  function showError(msg) {
-    let err = document.getElementById('form-error');
-    if (!err) {
-      err = document.createElement('div');
-      err.id = 'form-error';
-      err.className = 'error';
-      err.setAttribute('role', 'alert');
-      err.setAttribute('aria-live', 'polite');
-      form.parentNode.insertBefore(err, form.nextSibling);
-    }
-    err.textContent = msg;
-    err.style.display = 'block';
-  }
-
-  function clearError() {
-    const err = document.getElementById('form-error');
-    if (err) err.style.display = 'none';
-  }
-
   form.addEventListener('submit', (e) => {
-    e.preventDefault();
-    clearError();
-
     const email = (form.email?.value || '').trim();
     const password = (form.password?.value || '').trim();
 
+    // Basic validation before submit
     if (!email || !password) {
-      showError('Please enter both email and password.');
-      return;
+      e.preventDefault();
+      let err = document.getElementById('form-error');
+      if (!err) {
+        err = document.createElement('div');
+        err.id = 'form-error';
+        err.className = 'error';
+        form.parentNode.insertBefore(err, form.nextSibling);
+      }
+      err.textContent = 'Please enter both email and password.';
+      err.style.display = 'block';
+      err.style.cssText = 'margin-bottom:15px; padding:10px; background:#ffe0e0; color:#d32f2f; border-radius:4px;';
+      return false;
     }
 
     const emailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
     if (!emailValid) {
-      showError('Please enter a valid email address.');
-      return;
+      e.preventDefault();
+      let err = document.getElementById('form-error');
+      if (!err) {
+        err = document.createElement('div');
+        err.id = 'form-error';
+        err.className = 'error';
+        form.parentNode.insertBefore(err, form.nextSibling);
+      }
+      err.textContent = 'Please enter a valid email address.';
+      err.style.display = 'block';
+      err.style.cssText = 'margin-bottom:15px; padding:10px; background:#ffe0e0; color:#d32f2f; border-radius:4px;';
+      return false;
     }
-
-    const remember = !!form.remember?.checked;
-    const user = { email, remembered: remember };
-
-
-
-
-    window.location.href = 'Home.html';
   });
 });

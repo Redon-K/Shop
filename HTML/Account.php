@@ -1,3 +1,27 @@
+<?php session_start();
+// Kontrollon nese perdoruesi eshte i loguar
+if(!isset($_SESSION['user'])){
+    header("Location: login.php");
+    exit();
+}
+
+
+session_start();
+// Fshin te gjitha te dhenat e session
+session_destroy();
+// Fshin cookie nese ekziston
+if(isset($_COOKIE['user'])){
+    setcookie('user', "", time() - 3600);
+}
+// Ridrejton ne faqen e login
+header("Location:login.php");
+exit();
+
+?>
+
+
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -12,20 +36,20 @@
   <!-- Navigation bar (same as home) -->
   <header>
     <div class="nav">
-      <a href="Home.html"><img id="logo" src="../Images/Logo.png" alt="Apex Fuel logo"></a>
-      <form class="srch" action="Search.html" method="GET">
+      <a href="./Home.php"><img id="logo" src="../Images/Logo.png" alt="Apex Fuel logo"></a>
+      <form class="srch" action="./Search.php" method="GET">
         <input type="text" name="q" id="SearchBar" placeholder="Search products...">
         <button id="search" type="submit"><img src="../Images/search_24dp_000000_FILL0_wght400_GRAD0_opsz24.png" alt="search"></button>
       </form>
       <div class="buttons">
-  <a class="nav-link" href="Home.html#Proteins">Protein</a>
-  <a class="nav-link" href="Home.html#Pre">Pre Workout</a>
-  <a class="nav-link" href="Home.html#Vitamins">Vitamins</a>
-  <a class="nav-link" href="Home.html#Supplements">Supplements</a>
+  <a class="nav-link" href="./Home.php#Proteins">Protein</a>
+  <a class="nav-link" href="./Home.php#Pre">Pre Workout</a>
+  <a class="nav-link" href="./Home.php#Vitamins">Vitamins</a>
+  <a class="nav-link" href="./Home.php#Supplements">Supplements</a>
 
         <button id="favorites" type="button"><img src="../Images/favorite_24dp_000000_FILL0_wght400_GRAD0_opsz24.png" alt="favorites"></button>
         <button id="cart" type="button"><img src="../Images/shopping_cart_24dp_000000_FILL0_wght400_GRAD0_opsz24.png" alt="cart"></button>
-        <a id="account" href="#" data-target="Account.html" class="icon-link" aria-label="Account"><img src="../Images/account_circle_24dp_000000_FILL0_wght400_GRAD0_opsz24.png" alt="account"></a>
+        <a id="account" href="#" data-target="./Account.php" class="icon-link" aria-label="Account"><img src="../Images/account_circle_24dp_000000_FILL0_wght400_GRAD0_opsz24.png" alt="account"></a>
       </div>
     </div>
   </header>
@@ -94,6 +118,7 @@
           <div class="form-actions">
             <button id="editBtn" type="button" class="btn btn-ghost">Change Information</button>
             <button id="saveBtn" type="button" class="btn btn-primary">Save Profile</button>
+            <a href="../PHP/logout.php" class="btn btn-danger">Logout</a>
           </div>
         </div>
 
