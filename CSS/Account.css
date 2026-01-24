@@ -1,359 +1,328 @@
-:root{
-  --bg-1: Black;
-  --bg-2: DarkGray;
-  --card-bg: linear-gradient(180deg,#ffffff 0%, white 100%);
-  --muted: gray;
-  --accent: LightBlue;
-  --accent-600: Darkblue;
-  --success: LightGreen;
-  --glass: rgba(254,250,250,0.8);
-  --radius: 8px;
-  --shadow: 0 10px 30px rgba(2,6,23,0.6);
-  font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+/* Account Page */
+.admin-banner {
+    position: fixed;
+    top: 80px;
+    right: 20px;
+    background: linear-gradient(135deg, rgba(99,102,241,0.2), rgba(139,92,246,0.2));
+    border: 1px solid rgba(99,102,241,0.5);
+    padding: 12px 20px;
+    border-radius: 8px;
+    z-index: 100;
 }
 
-* { box-sizing: border-box; -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale; }
-
-body {
-  margin: 0;
-  min-height: 100vh;
-  /* Background image layer with a subtle dark overlay for contrast */
-  background-image: linear-gradient(rgba(11,17,32,0.55), rgba(11,17,32,0.55)), url("../Images/HD-Fitness-Backgrounds-82723246.jpg");
-  background-size: cover;
-  background-position: center center;
-  background-repeat: no-repeat;
-  padding: 60px 20px 48px 20px;
-  color: #0b1220;
-  -webkit-font-smoothing:antialiased;
+.admin-banner .btn {
+    display: inline-block;
+    padding: 10px 20px;
+    font-size: 14px;
 }
 
-/* Container */
 .profile-container {
-  max-width: 820px;
-  margin: 0 auto;
+    max-width: 900px;
+    margin: 40px auto;
+    padding: 0 20px;
 }
 
-/* Title */
-h1 {
-  color: lightblue;
-  text-align: center;
-  margin: 0 0 28px;
-  font-weight: 600;
-  letter-spacing: -0.02em;
-}
-
-/* Card */
 .profile-card {
-  display: flex;
-  gap: 20px;
-  /* Darker translucent mask so the background shows through but the card reads darker */
-  background: rgba(8,12,20,0.78); /* dark navy/black tint */
-  /* slightly stronger accent border to separate from background */
-  border: 1px solid rgba(44,123,229,0.12);
-  padding: 16px;
-  border-radius: var(--radius);
-  /* remove heavy shadow per request; keep layout clean */
-  box-shadow: none;
-  align-items: stretch;
-  overflow: hidden;
-  /* subtle backdrop blur for a glass-like effect (optional; supported in modern browsers) */
-  backdrop-filter: blur(6px);
-  color: #f8fafc; /* light text inside the dark card */
+    background: rgba(8,12,20,0.86);
+    border-radius: 16px;
+    border: 1px solid rgba(255,255,255,0.08);
+    padding: 40px;
+    color: #f8fafc;
 }
 
-/* Avatar / left column */
+/* Avatar Section */
 .avatar-section {
-  width: 190px;
-  min-width: 150px;
-  text-align: center;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  align-items: center;
-  justify-content: flex-start;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
 }
 
 .avatar {
-  width: 120px;
-  height: 120px;
-  border-radius: 50%;
-  overflow: hidden;
-  /* slightly stronger frame but less glow */
-  box-shadow: 0 6px 14px rgba(0,0,0,0.28);
-  border: 5px solid rgba(255,255,255,0.92);
-  background: linear-gradient(135deg, rgba(44,123,229,0.04), rgba(16,185,129,0.02));
+    width: 140px;
+    height: 140px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, rgb(87,87,243), rgb(139,92,246));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    border: 4px solid rgba(87,87,243,0.3);
+    margin-bottom: 20px;
+    position: relative;
 }
 
 .avatar img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-  transition: opacity .25s ease;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
 }
 
-/* file input appearance under the avatar */
-.avatar-actions input[type="file"] {
-  display: none; /* hidden — we'll use a styled label/button instead */
+.avatar::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border-radius: 50%;
+    background: linear-gradient(135deg, transparent, rgba(255,255,255,0.1));
 }
 
-.file-btn {
-  display: inline-block;
-  width: 100%;
-  padding: 8px 10px;
-  border-radius: 8px;
-  background: rgba(255,255,255,0.04);
-  border: 1px solid rgba(255,255,255,0.06);
-  color: #f8fafc;
-  font-size: 0.95rem;
-  text-align: center;
-  cursor: pointer;
-  box-sizing: border-box;
+#changeAvatar {
+    padding: 10px 20px;
+    background: rgba(255,255,255,0.1);
+    color: #f8fafc;
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.2s ease;
 }
 
-.file-name {
-  display: block;
-  margin-top: 8px;
-  color: rgba(248,250,252,0.8);
-  font-size: 0.9rem;
-  text-align: center;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+#changeAvatar:hover {
+    background: rgba(255,255,255,0.15);
+    border-color: rgba(255,255,255,0.3);
+    transform: translateY(-2px);
 }
 
-/* Name & title */
-.profile-name {
-  font-size: 1.25rem;
-  font-weight: 700;
-  color: #f8fafc;
-  margin: 0;
+/* Form Section */
+.form-section {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
 }
 
-.profile-title {
-  font-size: 0.95rem;
-  color: rgba(248,250,252,0.78);
-  margin-top: 4px;
+.compact-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
 }
 
-/* Small stats row */
-.stats {
-  display: flex;
-  gap: 12px;
-  margin-top: 8px;
-  width: 100%;
-  justify-content: center;
+.form-section label {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
 }
 
-.stat {
-  background: rgba(15,23,43,0.03);
-  padding: 8px 12px;
-  border-radius: 999px;
-  font-size: 0.85rem;
-  color: var(--muted);
-  display: inline-flex;
-  gap: 8px;
-  align-items: center;
+.label-text {
+    font-size: 14px;
+    font-weight: 600;
+    color: rgba(248,250,252,0.9);
 }
 
-/* Action buttons under avatar */
-.avatar-actions {
-  display: flex;
-  gap: 8px;
-  margin-top: 6px;
-  flex-wrap: wrap;
-  justify-content: center;
+.form-section input,
+.form-section textarea,
+.form-section select {
+    padding: 14px;
+    background: rgba(0,0,0,0.2);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 8px;
+    color: #f8fafc;
+    font-size: 15px;
+    transition: all 0.2s ease;
+    font-family: inherit;
 }
 
-button, .btn {
-  font-weight: 600;
-  border-radius: 8px;
-  border: none;
-  padding: 8px 14px;
-  cursor: pointer;
-  transition: transform .12s ease, box-shadow .12s ease, background-color .12s ease;
-  outline: none;
+.form-section input:read-only,
+.form-section textarea:read-only,
+.form-section select:read-only {
+    background: rgba(0,0,0,0.15);
+    cursor: default;
+    opacity: 0.8;
 }
 
-button:active, .btn:active { transform: translateY(1px); }
+.form-section input:disabled,
+.form-section textarea:disabled,
+.form-section select:disabled {
+    background: rgba(0,0,0,0.15);
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.form-section input:focus,
+.form-section textarea:focus,
+.form-section select:focus {
+    outline: none;
+    border-color: rgb(87,87,243);
+    box-shadow: 0 0 0 3px rgba(87,87,243,0.1);
+    background: rgba(0,0,0,0.3);
+}
+
+.form-section textarea {
+    resize: vertical;
+    min-height: 100px;
+}
+
+/* Address Textarea */
+textarea#address {
+    grid-column: 1 / -1;
+}
+
+/* Form Rows */
+.form-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    grid-column: 1 / -1;
+    gap: 20px;
+    padding: 10px 0;
+    border-top: 1px solid rgba(255,255,255,0.05);
+    margin-top: 10px;
+}
+
+.inline-checkbox {
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
+}
+
+.inline-checkbox input {
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+    accent-color: rgb(87,87,243);
+}
+
+/* Form Actions */
+.form-actions {
+    display: flex;
+    gap: 12px;
+    justify-content: flex-end;
+    margin-top: 20px;
+    grid-column: 1 / -1;
+}
+
+.btn {
+    padding: 14px 28px;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 15px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 120px;
+}
 
 .btn-primary {
-  /* more visible blue for the primary action */
-  background: rgb(87,87,243); /* visible accent */
-  color: #ffffff;
-  box-shadow: 0 6px 18px rgba(87,87,243,0.18);
-  border: none;
+    background: linear-gradient(135deg, rgb(87,87,243), rgb(139,92,246));
+    color: white;
 }
 
-.btn-primary:hover {
-  background: rgb(65,65,179);
-  box-shadow: 0 8px 22px rgba(65,65,179,0.18);
+.btn-primary:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(87,87,243,0.3);
+}
+
+.btn-primary:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
 }
 
 .btn-ghost {
-  background: rgba(255,255,255,0.02);
-  color: #f8fafc; /* light text to be visible on dark card */
-  border: 1px solid rgba(255,255,255,0.04);
+    background: rgba(255,255,255,0.1);
+    color: #f8fafc;
+    border: 1px solid rgba(255,255,255,0.2);
 }
 
-.btn-ghost:hover {
-  background: rgba(255,255,255,0.04);
-  color: #ffffff;
+.btn-ghost:hover:not(:disabled) {
+    background: rgba(255,255,255,0.15);
+    border-color: rgba(255,255,255,0.3);
+    transform: translateY(-2px);
 }
 
-/* Form / right column */
-.form-section {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
+.btn-ghost:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
 }
 
-/* compact two-column grid for top fields */
-.compact-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 8px 12px;
-  align-items: start;
-}
-.compact-grid label { margin-bottom: 0; }
-
-.form-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 12px;
-}
-.inline-checkbox { display: flex; align-items: center; gap: 8px; }
-
-/* make address take full width */
-.form-section > label[for="address"] { grid-column: 1 / -1; }
-
-/* Form layout */
-.form-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 12px;
+.btn-danger {
+    background: linear-gradient(135deg, #f44336, #d32f2f);
+    color: white;
 }
 
-.field {
-  display: flex;
-  flex-direction: column;
+.btn-danger:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(244,67,54,0.3);
 }
 
-label {
-  font-size: 0.83rem;
-  color: rgba(248,250,252,0.86);
-  margin-bottom: 6px;
-  display: block;
+.btn-danger:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
 }
 
-input[type="tel"],
-input[type="text"],
-input[type="email"],
-input[type="password"],
-textarea,
-select {
-  /* darker input to match card while remaining readable */
-  background: rgba(255,255,255,0.04);
-  border: 1px solid rgba(255,255,255,0.06);
-  padding: 8px 10px;
-  border-radius: 8px;
-  font-size: 0.9rem;
-  color: #f8fafc;
-  transition: box-shadow .12s ease, border-color .12s ease;
-  width: 100%;
-}
-
-/* ensure date input matches the rest of the inputs */
-input[type="date"] {
-  background: rgba(255,255,255,0.04);
-  border: 1px solid rgba(255,255,255,0.06);
-  padding: 8px 10px;
-  border-radius: 8px;
-  font-size: 0.9rem;
-  color: #f8fafc;
-}
-
-/* color the calendar picker icon to better match the theme (WebKit) */
-input[type="date"]::-webkit-calendar-picker-indicator {
-  filter: invert(1) brightness(1.6) contrast(0.9);
-}
-
-/* disabled inputs visual */
-input:disabled, textarea:disabled, select:disabled, .file-btn.disabled {
-  opacity: 0.65;
-  cursor: not-allowed;
-}
-/* prevent clicking the file label when disabled */
-.file-btn.disabled {
-  pointer-events: none;
-}
-
-/* prevent inputs from visually overflowing the card when content is long */
-input[type="tel"], input[type="text"], input[type="email"], textarea {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-input:focus, textarea:focus, select:focus {
-  outline: none;
-  border-color: rgba(44,123,229,0.9);
-  box-shadow: 0 8px 24px rgba(44,123,229,0.12);
-}
-
-textarea {
-  min-height: 100px;
-  resize: vertical;
-}
-
-/* make label text and inputs align nicely with subtle separators */
-.form-section label {
-  display: block;
-}
-.label-text {
-  display: block;
-  margin-bottom: 6px;
-  font-weight: 600;
-  color: rgba(248,250,252,0.9);
-}
-
-/* Form bottom actions */
-.form-actions {
-  display: flex;
-  gap: 8px;
-  justify-content: flex-end;
-  margin-top: 6px;
-}
-
-/* Helper/status text */
+/* Status Messages */
 #status {
-  margin-top: 8px;
-  color: var(--success);
-  font-weight: 600;
-  font-size: 0.95rem;
+    padding: 16px;
+    border-radius: 8px;
+    text-align: center;
+    font-weight: 500;
+    min-height: 20px;
+    grid-column: 1 / -1;
+    background: rgba(0,0,0,0.1);
+    border: 1px solid rgba(255,255,255,0.05);
+    margin-top: 12px;
+    font-size: 14px;
 }
 
-/* Small details */
-.small {
-  font-size: 0.85rem;
-  color: var(--muted);
+/* Responsive Account */
+@media (max-width: 768px) {
+    .profile-card {
+        grid-template-columns: 1fr;
+        gap: 30px;
+        padding: 24px;
+    }
+    
+    .avatar {
+        width: 120px;
+        height: 120px;
+    }
+    
+    .compact-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    textarea#address {
+        grid-column: 1;
+    }
+    
+    .form-row {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 16px;
+    }
+    
+    .form-actions {
+        flex-direction: column;
+    }
+    
+    .btn {
+        width: 100%;
+    }
 }
 
-/* Responsive */
-@media (max-width: 880px) {
-  .profile-card { flex-direction: column; padding: 16px; gap: 14px; }
-  .avatar-section { width: 100%; flex-direction: row; align-items: center; gap: 12px; justify-content: flex-start; padding: 8px 0; }
-  .avatar { width: 96px; height: 96px; border-width: 4px; }
-  .profile-name { font-size: 1.05rem; }
-  .compact-grid { grid-template-columns: 1fr; }
-  .form-actions { justify-content: stretch; }
-}
-
-/* Very small */
-@media (max-width: 420px) {
-  body { padding: 20px 12px; }
-  .avatar-section { gap: 10px; }
-  .avatar-actions { gap: 6px; }
+@media (max-width: 480px) {
+    .profile-container {
+        padding: 0 16px;
+    }
+    
+    .profile-card {
+        padding: 20px;
+        gap: 24px;
+    }
+    
+    .avatar {
+        width: 100px;
+        height: 100px;
+    }
+    
+    .form-actions {
+        gap: 8px;
+    }
 }

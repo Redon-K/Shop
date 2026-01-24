@@ -1,12 +1,14 @@
 <?php
 session_start();
 
-if(!isset($_SESSION['user']) && isset($_COOKIE['user'])){
-    $_SESSION['user'] = $_COOKIE['user'];
-    header("Location: ../HTML/Home.php");
+// If already logged in, redirect to home
+if(isset($_SESSION['user_id'])){
+    header("Location: Home.php");
     exit();
 }
 
+// Check if form was submitted
+$error = '';
 if($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['email'])){
     $email = $_POST['email'] ?? '';
     $password = $_POST['password'] ?? '';
@@ -17,20 +19,24 @@ if($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['email'])){
     } elseif(!filter_var($email, FILTER_VALIDATE_EMAIL)){
         $error = 'Please enter a valid email address.';
     } else {
-        // Demo credentials - replace with database query in production
+        // Demo credentials
         $valid_email = 'admin@apex.com';
         $valid_password = 'admin123';
         
         if($email === $valid_email && $password === $valid_password){
-            $_SESSION['user'] = $email;
+            $_SESSION['user_id'] = 1;
+            $_SESSION['email'] = $email;
+            $_SESSION['first_name'] = 'Admin';
+            $_SESSION['last_name'] = 'User';
+            $_SESSION['is_admin'] = true;
             $_SESSION['login_time'] = time();
             
             // Handle "Remember me"
             if(isset($_POST['remember'])){
-                setcookie('user', $email, time() + (30 * 24 * 60 * 60), '/');
+                setcookie('user_id', '1', time() + (30 * 24 * 60 * 60), '/');
             }
             
-            header("Location: ../HTML/Home.html");
+            header("Location: Home.php");
             exit();
         } else {
             $error = 'Invalid email or password.';
@@ -38,85 +44,93 @@ if($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['email'])){
     }
 }
 
-// If form was submitted with error, return to form with error message
-if(isset($error)){
-    $form_error = $error;
-}
+$page_title = 'Apex Fuel — Log In';
+$additional_css = ['LogIn.css'];
 ?>
 
+<?php include 'components/head.php'; ?>
+<?php include 'components/navbar.php'; ?>
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <link rel="stylesheet" href="../CSS/Home.css" />
-  <link rel="stylesheet" href="../CSS/LogIn.css" />
-  <title>Apex Fuel — Log In</title>
-</head>
-<body>
-  <!-- Navigation bar (same as home) -->
-  <header>
-    <div class="nav">
-      <a href="./Home.php"><img id="logo" src="../Images/Logo.png" alt="Apex Fuel logo"></a>
-      <form class="srch" action="./Search.php" method="GET">
-        <input type="text" name="q" id="SearchBar" placeholder="Search products...">
-        <button id="search" type="submit"><img src="../Images/search_24dp_000000_FILL0_wght400_GRAD0_opsz24.png" alt="search"></button>
-      </form>
-      <div class="buttons">
-        <button type="button">Protein</button>
-        <button type="button">Pre Workout</button>
-        <button type="button">Vitamins</button>
-        <button type="button">Supplements</button>
-
-        <button id="favorites" type="button"><img src="../Images/favorite_24dp_000000_FILL0_wght400_GRAD0_opsz24.png" alt="favorites"></button>
-        <button id="cart" type="button"><img src="../Images/shopping_cart_24dp_000000_FILL0_wght400_GRAD0_opsz24.png" alt="cart"></button>
-        <a id="account" href="#" data-target="./Account.php" class="icon-link" aria-label="Account"><img src="../Images/account_circle_24dp_000000_FILL0_wght400_GRAD0_opsz24.png" alt="account"></a>
-      </div>
-    </div>
-  </header>
-  <main>
+<main>
     <section class="auth-card" role="main">
-      <img class="brand-logo" src="../Images/Logo.png" alt="Apex Fuel logo">
+        <img class="brand-logo" src="../Images/Logo.png" alt="Apex Fuel logo">
 
-      <h1 class="title">Log in to Apex Fuel</h1>
+        <h1 class="title">Log in to Apex Fuel</h1>
 
-      <form id=\"login-form\" action=\"./login.php\" method=\"post\" novalidate>
-        <?php if(isset($form_error)): ?>
-          <div id="form-error" class="error" style="margin-bottom:15px; padding:10px; background:#ffe0e0; color:#d32f2f; border-radius:4px;">
-            <?php echo htmlspecialchars($form_error); ?>
-          </div>
+        <?php if(!empty($error)): ?>
+            <div id="form-error" class="error" style="margin-bottom:15px; padding:10px; background:#ffe0e0; color:#d32f2f; border-radius:4px;">
+                <?php echo htmlspecialchars($error); ?>
+            </div>
         <?php endif; ?>
         
-        <div class="form-row">
-          <label for="email">Email</label>
-          <input id="email" name="email" type="email" autocomplete="email" required>
-        </div>
+        <form method="post" action="" novalidate>
+            <div class="form-row">
+                <label for="email">Email</label>
+                <input id="email" name="email" type="email" autocomplete="email" required value="<?php echo htmlspecialchars($_POST['email'] ?? ''); ?>">
+            </div>
 
-        <div class="form-row">
-          <label for="password">Password</label>
-          <input id="password" name="password" type="password" autocomplete="current-password" required>
-        </div>
+            <div class="form-row">
+                <label for="password">Password</label>
+                <input id="password" name="password" type="password" autocomplete="current-password" required>
+            </div>
 
-        <div class="form-row helper-row">
-          <label class="remember"><input id="remember" name="remember" type="checkbox"> Remember me</label>
-        </div>
+            <div class="form-row helper-row">
+                <label class="remember">
+                    <input id="remember" name="remember" type="checkbox"> Remember me
+                </label>
+            </div>
 
-        <div class="actions">
-          <button class="btn" type="submit">Log in</button>
-          <a class="link-muted" href="./Home.php">Back to shop</a>
-        </div>
-      </form>
+            <div class="actions">
+                <button class="btn" type="submit">Log in</button>
+                <a class="link-muted" href="Home.php">Back to shop</a>
+            </div>
+        </form>
 
-      <p class="signup-cta">Don't have an account? <a class="link-muted" href="./Register.php">Sign up</a></p>
+        <p class="signup-cta">Don't have an account? <a class="link-muted" href="Register.php">Sign up</a></p>
     </section>
-  </main>
+</main>
 
-
-
-  <script src="../JS/Home.js"></script>
-  <script src="../JS/Login.js"></script>
-
-
+<script src="../JS/Home.js"></script>
+<script>
+// Frontend validation
+document.addEventListener('DOMContentLoaded', function() {
+    const form = document.querySelector('form');
+    if (form) {
+        form.addEventListener('submit', function(e) {
+            const email = document.getElementById('email').value.trim();
+            const password = document.getElementById('password').value.trim();
+            
+            if (!email || !password) {
+                e.preventDefault();
+                let errorDiv = document.getElementById('form-error');
+                if (!errorDiv) {
+                    errorDiv = document.createElement('div');
+                    errorDiv.id = 'form-error';
+                    errorDiv.className = 'error';
+                    errorDiv.style.cssText = 'margin-bottom:15px; padding:10px; background:#ffe0e0; color:#d32f2f; border-radius:4px;';
+                    form.parentNode.insertBefore(errorDiv, form);
+                }
+                errorDiv.textContent = 'Please enter both email and password.';
+                return false;
+            }
+            
+            const emailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+            if (!emailValid) {
+                e.preventDefault();
+                let errorDiv = document.getElementById('form-error');
+                if (!errorDiv) {
+                    errorDiv = document.createElement('div');
+                    errorDiv.id = 'form-error';
+                    errorDiv.className = 'error';
+                    errorDiv.style.cssText = 'margin-bottom:15px; padding:10px; background:#ffe0e0; color:#d32f2f; border-radius:4px;';
+                    form.parentNode.insertBefore(errorDiv, form);
+                }
+                errorDiv.textContent = 'Please enter a valid email address.';
+                return false;
+            }
+        });
+    }
+});
+</script>
 </body>
 </html>

@@ -7,7 +7,7 @@ if(isset($_COOKIE['user'])){
     setcookie('user', "", time() - 3600);
 }
 // Ridrejton ne faqen e login
-header("Location:login.php");
+header("Location:../HTML/login.php");
 exit();
 
 ?>

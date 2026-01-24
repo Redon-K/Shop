@@ -1,133 +1,95 @@
-<?php session_start();
-// Kontrollon nese perdoruesi eshte i loguar
-if(!isset($_SESSION['user'])){
+<?php
+session_start();
+
+// Check if user is logged in
+if(!isset($_SESSION['user_id'])){
     header("Location: login.php");
     exit();
 }
 
+// Get admin status from database
+require_once '../PHP/config.php';
+$conn = getDBConnection();
+$stmt = $conn->prepare("SELECT is_admin FROM users WHERE id = ?");
+$stmt->bind_param("i", $_SESSION['user_id']);
+$stmt->execute();
+$result = $stmt->get_result();
+$user = $result->fetch_assoc();
+$stmt->close();
+$conn->close();
 
-session_start();
-// Fshin te gjitha te dhenat e session
-session_destroy();
-// Fshin cookie nese ekziston
-if(isset($_COOKIE['user'])){
-    setcookie('user', "", time() - 3600);
-}
-// Ridrejton ne faqen e login
-header("Location:login.php");
-exit();
+$is_admin = isset($user['is_admin']) && $user['is_admin'] ? true : false;
 
+$page_title = 'My Account — Apex Fuel';
+$additional_css = ['Account.css'];
 ?>
 
+<?php include 'components/head.php'; ?>
+<?php include 'components/navbar.php'; ?>
 
+<?php if($is_admin): ?>
+<div class="admin-banner">
+    <a href="./admin/index.php" class="btn btn-primary">Go to Admin Panel</a>
+</div>
+<?php endif; ?>
 
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Apex Account</title>
-  <link rel="stylesheet" href="../CSS/Home.css" />
-  <link rel="stylesheet" href="../CSS/Account.css" />
-</head>
-<body>
-
-  <!-- Navigation bar (same as home) -->
-  <header>
-    <div class="nav">
-      <a href="./Home.php"><img id="logo" src="../Images/Logo.png" alt="Apex Fuel logo"></a>
-      <form class="srch" action="./Search.php" method="GET">
-        <input type="text" name="q" id="SearchBar" placeholder="Search products...">
-        <button id="search" type="submit"><img src="../Images/search_24dp_000000_FILL0_wght400_GRAD0_opsz24.png" alt="search"></button>
-      </form>
-      <div class="buttons">
-  <a class="nav-link" href="./Home.php#Proteins">Protein</a>
-  <a class="nav-link" href="./Home.php#Pre">Pre Workout</a>
-  <a class="nav-link" href="./Home.php#Vitamins">Vitamins</a>
-  <a class="nav-link" href="./Home.php#Supplements">Supplements</a>
-
-        <button id="favorites" type="button"><img src="../Images/favorite_24dp_000000_FILL0_wght400_GRAD0_opsz24.png" alt="favorites"></button>
-        <button id="cart" type="button"><img src="../Images/shopping_cart_24dp_000000_FILL0_wght400_GRAD0_opsz24.png" alt="cart"></button>
-        <a id="account" href="#" data-target="./Account.php" class="icon-link" aria-label="Account"><img src="../Images/account_circle_24dp_000000_FILL0_wght400_GRAD0_opsz24.png" alt="account"></a>
-      </div>
-    </div>
-  </header>
-
-  <div class="profile-container">
-
+<div class="profile-container">
     <div class="profile-card">
-      <div class="avatar-section">
-        <div class="avatar">
-          <img src="../Images/AccountProfile.png" alt="Profile Image" id="avatar" loading="lazy" />
+        <div class="form-section">
+            <div class="compact-grid">
+                <label>
+                    <span class="label-text">First Name</span>
+                    <input type="text" id="firstName" placeholder="John">
+                </label>
+                <label>
+                    <span class="label-text">Last Name</span>
+                    <input type="text" id="lastName" placeholder="Doe">
+                </label>
+                <label>
+                    <span class="label-text">Email</span>
+                    <input type="email" id="email" placeholder="john@example.com">
+                </label>
+                <label>
+                    <span class="label-text">Phone</span>
+                    <input type="tel" id="phone" placeholder="+1 (555) 123-4567">
+                </label>
+                <label>
+                    <span class="label-text">Date of Birth</span>
+                    <input type="date" id="dob">
+                </label>
+                <label>
+                    <span class="label-text">Contact Preference</span>
+                    <select id="contactPref">
+                        <option value="email">Email</option>
+                        <option value="phone">Phone</option>
+                    </select>
+                </label>
+            </div>
+
+            <label>
+                <span class="label-text">Address</span>
+                <textarea id="address" placeholder="123 Main St, City, State, ZIP"></textarea>
+            </label>
+
+            <div class="form-row">
+                <label class="inline-checkbox">
+                    <input type="checkbox" id="newsletter">
+                    <span class="label-text">Subscribe to newsletter</span>
+                </label>
+            </div>
+
+            <div id="status" role="status" aria-live="polite"></div>
+
+            <div class="form-actions">
+                <button id="editBtn" class="btn btn-ghost">Change Information</button>
+                <button id="saveBtn" class="btn btn-primary" disabled>Save Changes</button>
+                <button id="logoutBtn" class="btn btn-danger">Sign Out</button>
+            </div>
         </div>
-        <div class="avatar-actions">
-        <label class="file-btn" for="avatarInput">Choose file</label>
-        <input type="file" id="avatarInput" accept="image/*" />
-          <span class="file-name" id="avatarFileName">No file chosen</span>
-        </div>
-      </div>
-
-      <div class="form-section">
-        <div class="compact-grid">
-          <label for="firstName">
-            <span class="label-text">First</span>
-            <input type="text" id="firstName" placeholder="First name" />
-          </label>
-
-          <label for="lastName">
-            <span class="label-text">Last</span>
-            <input type="text" id="lastName" placeholder="Last name" />
-          </label>
-
-          <label for="email">
-            <span class="label-text">Email</span>
-            <input type="email" id="email" placeholder="you@example.com" />
-          </label>
-
-          <label for="phone">
-            <span class="label-text">Phone</span>
-            <input type="tel" id="phone" placeholder="e.g., +1 234 567 890" />
-          </label>
-
-          <label for="dob">
-            <span class="label-text">DOB</span>
-            <input type="date" id="dob" />
-          </label>
-
-          <label for="contactPref">
-            <span class="label-text">Contact</span>
-            <select id="contactPref">
-              <option value="email">Email</option>
-              <option value="phone">Phone</option>
-            </select>
-          </label>
-        </div>
-
-        <label for="address">
-          <span class="label-text">Address</span>
-          <textarea id="address">123 Muscle Street, Fit City</textarea>
-        </label>
-
-        <div class="form-row">
-          <label for="newsletter" class="inline-checkbox">
-            <input type="checkbox" id="newsletter" />
-            <span class="label-text" style="display:inline-block; margin-left:8px; font-weight:500;">Subscribe to newsletter</span>
-          </label>
-
-          <div class="form-actions">
-            <button id="editBtn" type="button" class="btn btn-ghost">Change Information</button>
-            <button id="saveBtn" type="button" class="btn btn-primary">Save Profile</button>
-            <a href="../PHP/logout.php" class="btn btn-danger">Logout</a>
-          </div>
-        </div>
-
-        <p id="status" role="status" aria-live="polite"></p>
-      </div>
     </div>
-  </div>
+</div>
 
-  <script src="../JS/Home.js"></script>
-  <script src="../JS/Account.js"></script>
+<script src="../JS/Home.js"></script>
+<script src="../JS/Account.js"></script>
 </body>
 </html>

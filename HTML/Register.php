@@ -1,139 +1,95 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <link rel="stylesheet" href="../CSS/Home.css" />
-  <link rel="stylesheet" href="../CSS/Register.css" />
-  <title>Apex Fuel — Register</title>
-</head>
-<body>
-  <!-- Navigation bar (same as other pages) -->
- <header>
-        <div class="nav">
-            <img id="logo" src="../Images/Logo.png" alt="Apex Fuel logo">
-            <form class="srch" action="./Search.php" method="GET">
-                <input type="text" name="q" id="SearchBar" placeholder="Search products...">
-                <button id="search" type="submit"><img src="../Images/search_24dp_000000_FILL0_wght400_GRAD0_opsz24.png" alt="search"></button>
-            </form>
-            <div class="buttons">
-                <a class="nav-link" href="./Home.php#Proteins">Protein</a>
-                <a class="nav-link" href="./Home.php#Pre">Pre Workout</a>
-                <a class="nav-link" href="./Home.php#Vitamins">Vitamins</a>
-                <a class="nav-link" href="./Home.php#Supplements">Supplements</a>
+<?php
+$page_title = 'Apex Fuel — Register';
+$additional_css = ['Register.css'];
+?>
 
-                <button id="favorites" type="button"><img src="../Images/favorite_24dp_000000_FILL0_wght400_GRAD0_opsz24.png" alt="favorites"></button>
-                <button id="cart" type="button"><img src="../Images/shopping_cart_24dp_000000_FILL0_wght400_GRAD0_opsz24.png" alt="cart"></button>
-                <a id="account" href="#" data-target="Account.php" class="icon-link" aria-label="Account"><img src="../Images/account_circle_24dp_000000_FILL0_wght400_GRAD0_opsz24.png" alt="account"></a>
-            </div>
-        </div>
-    </header>
+<?php include 'components/head.php'; ?>
+<?php include 'components/navbar.php'; ?>
 
-  <main>
+<main>
     <section class="auth-card" role="main">
-      <img class="brand-logo" src="../Images/Logo.png" alt="Apex Fuel logo">
+        <img class="brand-logo" src="../Images/Logo.png" alt="Apex Fuel logo">
 
-      <h1 class="title">Create an account</h1>
+        <h1 class="title">Create an account</h1>
 
-      <form id="register-form" action="#" method="post" novalidate>
-        <div class="form-row">
-          <label for="fullname">Full name</label>
-          <input id="fullname" name="fullname" type="text" autocomplete="name" placeholder="John Doe" required>
-        </div>
-
-        <div class="form-row">
-          <label for="email">Email</label>
-          <input id="email" name="email" type="email" autocomplete="email" placeholder="you@example.com" required>
-        </div>
-
-        <div class="form-row">
-          <label for="password">Password</label>
-          <input id="password" name="password" type="password" autocomplete="new-password" required>
-        </div>
-
-        <div class="form-row">
-          <label for="confirm">Confirm password</label>
-          <input id="confirm" name="confirm" type="password" autocomplete="new-password" required>
-        </div>
-
-        <div class="form-row">
-          <label for="phone">Phone (optional)</label>
-          <input id="phone" name="phone" type="tel" autocomplete="tel" placeholder="+355 4xx xxx xxx">
-        </div>
-
-        <fieldset style="border:none;padding:0;margin:0 0 12px 0;">
-
-          <div class="form-row">
-            <label for="street">Street address</label>
-            <input id="street" name="street" type="text" autocomplete="street-address" placeholder="123 Main St">
-          </div>
-
-          <div class="form-row" style="display:flex;gap:8px;">
-            <div style="flex:1">
-              <label for="city">City</label>
-              <input id="city" name="city" type="text" autocomplete="address-level2" placeholder="City">
+        <form id="register-form" method="post" novalidate>
+            <div class="form-row">
+                <label for="fullname">Full name</label>
+                <input id="fullname" name="fullname" type="text" autocomplete="name" placeholder="John Doe" required>
             </div>
-            <div style="width:120px">
-              <label for="postal">Postal code</label>
-              <input id="postal" name="postal" type="text" autocomplete="postal-code" placeholder="1000">
+
+            <div class="form-row">
+                <label for="email">Email</label>
+                <input id="email" name="email" type="email" autocomplete="email" placeholder="you@example.com" required>
             </div>
-              <link rel="stylesheet" href="../CSS/Home.css" />
 
-          <div class="form-row" style="display:flex;gap:8px;">
-            <div style="flex:1">
-              <label for="region">State / Region</label>
-              <input id="region" name="region" type="text" autocomplete="address-level1" placeholder="State / Region">
-              <!-- Navigation bar (same as home) -->
-              <header>
-                <div class="nav">
-                  <a href="./Home.php"><img id="logo" src="../Images/Logo.png" alt="Apex Fuel logo"></a>
-                  <form class="srch" action="./Search.php" method="GET">
-                    <input type="text" name="q" id="SearchBar" placeholder="Search products...">
-                    <button id="search" type="submit"><img src="../Images/search_24dp_000000_FILL0_wght400_GRAD0_opsz24.png" alt="search"></button>
-                  </form>
-                  <div class="buttons">
-                    <button type="button">Protein</button>
-                    <button type="button">Pre Workout</button>
-                    <button type="button">Vitamins</button>
-                    <button type="button">Supplements</button>
+            <div class="form-row">
+                <label for="password">Password</label>
+                <input id="password" name="password" type="password" autocomplete="new-password" required>
+            </div>
 
-                    <button id="favorites" type="button"><img src="../Images/favorite_24dp_000000_FILL0_wght400_GRAD0_opsz24.png" alt="favorites"></button>
-                    <button id="cart" type="button"><img src="../Images/shopping_cart_24dp_000000_FILL0_wght400_GRAD0_opsz24.png" alt="cart"></button>
-                    <a id="account" href="#" data-target="./Account.php" class="icon-link" aria-label="Account"><img src="../Images/account_circle_24dp_000000_FILL0_wght400_GRAD0_opsz24.png" alt="account"></a>
-                  </div>
+            <div class="form-row">
+                <label for="confirm">Confirm password</label>
+                <input id="confirm" name="confirm" type="password" autocomplete="new-password" required>
+            </div>
+
+            <div class="form-row">
+                <label for="phone">Phone (optional)</label>
+                <input id="phone" name="phone" type="tel" autocomplete="tel" placeholder="+1 (555) 123-4567">
+            </div>
+
+            <fieldset style="border:none;padding:0;margin:0 0 12px 0;">
+                <div class="form-row">
+                    <label for="street">Street address</label>
+                    <input id="street" name="street" type="text" autocomplete="street-address" placeholder="123 Main St">
                 </div>
-              </header>
+
+                <div class="form-row" style="display:flex;gap:8px;">
+                    <div style="flex:1">
+                        <label for="city">City</label>
+                        <input id="city" name="city" type="text" autocomplete="address-level2" placeholder="City">
+                    </div>
+                    <div style="width:120px">
+                        <label for="postal">Postal code</label>
+                        <input id="postal" name="postal" type="text" autocomplete="postal-code" placeholder="10001">
+                    </div>
+                </div>
+
+                <div class="form-row" style="display:flex;gap:8px;">
+                    <div style="flex:1">
+                        <label for="region">State / Region</label>
+                        <input id="region" name="region" type="text" autocomplete="address-level1" placeholder="NY">
+                    </div>
+                    <div style="width:160px">
+                        <label for="country">Country</label>
+                        <select id="country" name="country" autocomplete="country">
+                            <option value="">Select country</option>
+                            <option value="USA">United States</option>
+                            <option value="Canada">Canada</option>
+                            <option value="UK">United Kingdom</option>
+                            <option value="Germany">Germany</option>
+                            <option value="Albania">Albania</option>
+                        </select>
+                    </div>
+                </div>
+            </fieldset>
+
+            <div class="form-row helper-row" style="margin-top:6px;">
+                <label class="remember"><input id="subscribe" name="subscribe" type="checkbox"> Subscribe to offers</label>
+                <a class="link-muted" href="./login.php">Already have an account?</a>
             </div>
-            <div style="width:160px">
-              <label for="country">Country</label>
-              <select id="country" name="country" autocomplete="country">
-                <option value="">Select country</option>
-                <option>Albania</option>
-                <option>United States</option>
-                <option>United Kingdom</option>
-                <option>Germany</option>
-                <option>Other</option>
-              </select>
+
+            <div class="actions">
+                <button class="btn" type="submit">Create account</button>
+                <a class="link-muted" href="./Home.php">Back to shop</a>
             </div>
-          </div>
-        </fieldset>
+        </form>
 
-        <div class="form-row helper-row" style="margin-top:6px;">
-          <label class="remember"><input id="subscribe" name="subscribe" type="checkbox"> Subscribe to offers</label>
-          <a class="link-muted" href="./LogIn.php">Already have an account?</a>
-        </div>
-
-        <div class="actions">
-          <button class="btn" type="submit">Create account</button>
-          <a class="link-muted" href="./Home.php">Back to shop</a>
-        </div>
-      </form>
-
-      <div id="form-error" class="error" role="alert" aria-live="polite"></div>
+        <div id="form-error" class="error" role="alert" aria-live="polite"></div>
     </section>
-  </main>
+</main>
 
-  <script src="../JS/Home.js"></script>
-  <script src="../JS/Register.js"></script>
+<script src="../JS/Home.js"></script>
+<script src="../JS/Register.js"></script>
 </body>
 </html>
