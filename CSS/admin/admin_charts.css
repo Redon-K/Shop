@@ -1,0 +1,5 @@
+/* admin_charts.css - Chart styles for admin panel */
+.admin-chart-container {
+    height: 300px;
+    margin-top: 20px;
+}
