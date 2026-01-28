@@ -1,13 +1,22 @@
 <?php
 session_start();
-// Fshin te gjitha te dhenat e session
+
 session_destroy();
-// Fshin cookie nese ekziston
+
 if(isset($_COOKIE['user'])){
     setcookie('user', "", time() - 3600);
 }
-// Ridrejton ne faqen e login
-header("Location:../HTML/login.php");
-exit();
 
+if(isset($_COOKIE['PHPSESSID'])){
+    setcookie('PHPSESSID', "", time() - 3600);
+}
+
+if ($is_ajax) {
+    header('Content-Type: application/json');
+    echo json_encode(['success' => true, 'message' => 'Logged out successfully']);
+    exit();
+} else {
+    header("Location: ../HTML/login.php");
+    exit();
+}
 ?>
