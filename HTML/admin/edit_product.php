@@ -2,6 +2,7 @@
 // admin/edit_product.php
 session_start();
 
+
 // Check if user is admin
 if (!isset($_SESSION['user_id']) || !isset($_SESSION['is_admin']) || !$_SESSION['is_admin']) {
     header("Location: ../login.php");
@@ -11,7 +12,12 @@ if (!isset($_SESSION['user_id']) || !isset($_SESSION['is_admin']) || !$_SESSION[
 require_once '../../PHP/config.php';
 require_once '../../PHP/auth.php';
 
-$conn = getDBConnection();
+try {
+    $conn = getDBConnection();
+} catch (Exception $e) {
+    die("Database connection failed: " . $e->getMessage());
+}
+
 $error = '';
 $success = '';
 
@@ -24,8 +30,13 @@ if ($product_id <= 0) {
 
 // Get product data
 $stmt = $conn->prepare("SELECT * FROM products WHERE id = ?");
+if (!$stmt) {
+    die("Prepare failed: " . $conn->error);
+}
 $stmt->bind_param("i", $product_id);
-$stmt->execute();
+if (!$stmt->execute()) {
+    die("Execute failed: " . $stmt->error);
+}
 $result = $stmt->get_result();
 $product = $result->fetch_assoc();
 $stmt->close();
@@ -37,6 +48,9 @@ if (!$product) {
 
 // Get categories
 $categories_result = $conn->query("SELECT id, name FROM categories WHERE is_active = 1 ORDER BY name");
+if (!$categories_result) {
+    die("Categories query failed: " . $conn->error);
+}
 $categories = $categories_result->fetch_all(MYSQLI_ASSOC);
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -63,14 +77,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // ✅ FIX: Check for duplicate SKU (only if SKU changed)
         if (!empty($sku) && $sku !== $product['sku']) {
             $check_sku = $conn->prepare("SELECT id FROM products WHERE sku = ? AND id != ?");
-            $check_sku->bind_param("si", $sku, $product_id);
-            $check_sku->execute();
-            $sku_result = $check_sku->get_result();
-            
-            if ($sku_result->num_rows > 0) {
-                $error = 'SKU already exists. Please use a different SKU.';
+            if ($check_sku) {
+                $check_sku->bind_param("si", $sku, $product_id);
+                $check_sku->execute();
+                $sku_result = $check_sku->get_result();
+                
+                if ($sku_result->num_rows > 0) {
+                    $error = 'SKU already exists. Please use a different SKU.';
+                }
+                $check_sku->close();
+            } else {
+                $error = 'Failed to prepare SKU check query: ' . $conn->error;
             }
-            $check_sku->close();
         }
         
         if (empty($error)) {
@@ -106,7 +124,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
             
             if (empty($error)) {
-                // Update product
+                // Update product - Debug the values
+                error_log("Updating product: ID=$product_id, Name=$name, Price=$price, Category=$category_id, SKU=$sku");
+                
                 $stmt = $conn->prepare("
                     UPDATE products SET 
                         category_id = ?, 
@@ -124,33 +144,40 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     WHERE id = ?
                 ");
                 
-                $stmt->bind_param(
-                    "isssdsisdi ii",
-                    $category_id, $name, $description, $short_description,
-                    $price, $image_url, $stock_quantity, $sku, $weight, 
-                    $is_featured, $is_active, $product_id
-                );
-                
-                if ($stmt->execute()) {
-                    // Log the action
-                    log_admin_action($_SESSION['user_id'], 'UPDATE', 'products', $product_id, [
-                        'product' => $name,
-                        'price' => $price,
-                        'category_id' => $category_id
-                    ]);
-                    
-                    $success = 'Product updated successfully!';
-                    // Refresh product data
-                    $stmt = $conn->prepare("SELECT * FROM products WHERE id = ?");
-                    $stmt->bind_param("i", $product_id);
-                    $stmt->execute();
-                    $result = $stmt->get_result();
-                    $product = $result->fetch_assoc();
-                    $stmt->close();
+                if (!$stmt) {
+                    $error = 'Prepare failed: ' . $conn->error;
                 } else {
-                    $error = 'Failed to update product: ' . $conn->error;
+                    // Debug bind_param
+                    $bind_result = $stmt->bind_param(
+                        "isssdsisdiii",
+                        $category_id, $name, $description, $short_description,
+                        $price, $image_url, $stock_quantity, $sku, $weight, 
+                        $is_featured, $is_active, $product_id
+                    );
+                    
+                    if (!$bind_result) {
+                        $error = 'Bind failed: ' . $stmt->error;
+                    } elseif (!$stmt->execute()) {
+                        $error = 'Execute failed: ' . $stmt->error;
+                    } else {
+                        // Log the action
+                        log_admin_action($_SESSION['user_id'], 'UPDATE', 'products', $product_id, [
+                            'product' => $name,
+                            'price' => $price,
+                            'category_id' => $category_id
+                        ]);
+                        
+                        $success = 'Product updated successfully!';
+                        // Refresh product data
+                        $refresh_stmt = $conn->prepare("SELECT * FROM products WHERE id = ?");
+                        $refresh_stmt->bind_param("i", $product_id);
+                        $refresh_stmt->execute();
+                        $refresh_result = $refresh_stmt->get_result();
+                        $product = $refresh_result->fetch_assoc();
+                        $refresh_stmt->close();
+                    }
+                    $stmt->close();
                 }
-                $stmt->close();
             }
         }
     }
