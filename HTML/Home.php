@@ -1,67 +1,114 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <link rel="stylesheet" href="../CSS/Home.css">
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Apex Fuel</title>
-</head>
-<body>
-    <!--Navigation bar-->
-    <header>
-        <div class="nav">
-            <img id="logo" src="../Images/Logo.png" alt="Apex Fuel logo">
-            <form class="srch" action="./Search.php" method="GET">
-                <input type="text" name="q" id="SearchBar" placeholder="Search products...">
-                <button id="search" type="submit"><img src="../Images/search_24dp_000000_FILL0_wght400_GRAD0_opsz24.png" alt="search"></button>
-            </form>
-            <div class="buttons">
-                <a class="nav-link" href="./Home.php#Proteins">Protein</a>
-                <a class="nav-link" href="./Home.php#Pre">Pre Workout</a>
-                <a class="nav-link" href="./Home.php#Vitamins">Vitamins</a>
-                <a class="nav-link" href="./Home.php#Supplements">Supplements</a>
+<?php
+require_once '../PHP/config.php';
 
-                <button id="favorites" type="button"><img src="../Images/favorite_24dp_000000_FILL0_wght400_GRAD0_opsz24.png" alt="favorites"></button>
-                <button id="cart" type="button"><img src="../Images/shopping_cart_24dp_000000_FILL0_wght400_GRAD0_opsz24.png" alt="cart"></button>
-                <a id="account" href="#" data-target="./Account.php" class="icon-link" aria-label="Account"><img src="../Images/account_circle_24dp_000000_FILL0_wght400_GRAD0_opsz24.png" alt="account"></a>
-            </div>
-        </div>
-    </header>
+// Get all categories
+$conn = getDBConnection();
+$categories = [];
+$result = $conn->query("SELECT id, name, slug FROM categories WHERE is_active = 1 ORDER BY name");
+if ($result) {
+    $categories = $result->fetch_all(MYSQLI_ASSOC);
+}
 
-    <div class="Main">
-        <div class="Intro">
-            <h1>APEX FUEL</h1>
-            <h2>ACHIEVE YOUR GOALS: <br> <b>BULK & DEFINE</b></h2>
-            <button id="shop-now" type="button">SHOP NOW</button>
-        </div>
+// Map category slugs to display names and IDs
+$categoryMap = [];
+foreach ($categories as $cat) {
+    $categoryMap[$cat['slug']] = ['name' => $cat['name'], 'id' => $cat['id']];
+}
 
-        <div class="Products">
-            <!-- Proteins part -->
-            <h3 id="Proteins">Proteins</h3>
-            <div id="Proteins" class="Proteins">
-                <div class="product-card" data-id="p1">
-                    <img src="../Images/Prote+na+whey+OPTIMUN+NUTRITION+Gold+Standard+chocolate+908+g-1159974388.jpg" alt="Whey Protein">
-                    <h3>Whey Protein</h3>
-                    <p>$29.99</p>
-                    <button class="add-to-cart" data-id="p1" type="button">Add to Cart</button>
-                </div>
-                <!-- duplicate product cards here as needed, keep class="add-to-cart" and data-id -->
-            </div>
+// Fetch products by category
+$productsByCategory = [];
+foreach ($categories as $cat) {
+    $stmt = $conn->prepare("SELECT id, name, price, image_url FROM products WHERE category_id = ? AND is_active = 1 LIMIT 6");
+    $stmt->bind_param("i", $cat['id']);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $productsByCategory[$cat['slug']] = $result->fetch_all(MYSQLI_ASSOC);
+    $stmt->close();
+}
 
-            <!-- Pre Workout part -->
-            <h3 id="Pre">Pre Workout</h3>
-            <div id="Pre" class="Pre"></div>
+$conn->close();
 
-            <!-- Vitamins part -->
-            <h3 id="Vitamins">Vitamins</h3>
-            <div id="Vitamins" class="Vitamins"></div>
+$page_title = 'Apex Fuel — Home';
+?>
 
-            <!-- Supplements part -->
-            <h3 id="Supplements">Supplements</h3>
-            <div id="Supplements" class="Supplements"></div>
-        </div>
+<?php include 'components/head.php'; ?>
+<?php include 'components/navbar.php'; ?>
+
+<div class="Main">
+    <div class="Intro">
+        <h1>APEX FUEL</h1>
+        <h2>ACHIEVE YOUR GOALS: <br> <b>BULK & DEFINE</b></h2>
+        <button id="shop-now" type="button">SHOP NOW</button>
     </div>
 
-    <script src="../JS/Home.js"></script>
+    <div class="Products">
+        <!-- Proteins part -->
+        <h3 id="Proteins">Proteins</h3>
+        <div id="Proteins" class="Proteins">
+            <?php foreach ($productsByCategory['proteins'] ?? [] as $product): ?>
+            <div class="product-card" data-id="<?php echo htmlspecialchars($product['id']); ?>">
+                <img src="<?php echo '../' . htmlspecialchars($product['image_url'] ?? 'Images/placeholder.jpg'); ?>" 
+     alt="<?php echo htmlspecialchars($product['name']); ?>">
+                <h3><?php echo htmlspecialchars($product['name']); ?></h3>
+                <p>$<?php echo number_format($product['price'], 2); ?></p>
+                <div style="display: flex; gap: 5px; width: 100%;">
+                    <button class="add-to-cart" data-id="<?php echo htmlspecialchars($product['id']); ?>" type="button" style="flex: 1;">Add to Cart</button>
+                    <a href="./Product.php?id=<?php echo htmlspecialchars($product['id']); ?>" style="flex: 1; text-decoration: none;margin: 5px;"><button type="button" style="width: 100%; padding: 8px; background: #5757f3; color: white; border: none; border-radius: 4px; cursor: pointer;">View Details</button></a>
+                </div>
+            </div>
+            <?php endforeach; ?>
+        </div>
+
+        <!-- Pre Workout part -->
+        <h3 id="Pre">Pre Workout</h3>
+        <div id="Pre" class="Pre">
+            <?php foreach ($productsByCategory['pre-workout'] ?? [] as $product): ?>
+            <div class="product-card" data-id="<?php echo htmlspecialchars($product['id']); ?>">
+                <img src="<?php echo '../' . htmlspecialchars($product['image_url'] ?? 'Images/placeholder.jpg'); ?>" 
+                alt="<?php echo htmlspecialchars($product['name']); ?>">                <h3><?php echo htmlspecialchars($product['name']); ?></h3>
+                <p>$<?php echo number_format($product['price'], 2); ?></p>
+                <div style="display: flex; gap: 5px; width: 100%;">
+                    <button class="add-to-cart" data-id="<?php echo htmlspecialchars($product['id']); ?>" type="button" style="flex: 1;">Add to Cart</button>
+                  <a href="./Product.php?id=<?php echo htmlspecialchars($product['id']); ?>" style="flex: 1; text-decoration: none;"><button type="button" style="width: 100%; padding: 8px; background: #5757f3; color: white; border: none; border-radius: 4px; cursor: pointer;">View Details</button></a>
+                </div>
+            </div>
+            <?php endforeach; ?>
+        </div>
+
+        <!-- Vitamins part -->
+        <h3 id="Vitamins">Vitamins</h3>
+        <div id="Vitamins" class="Vitamins">
+            <?php foreach ($productsByCategory['vitamins'] ?? [] as $product): ?>
+            <div class="product-card" data-id="<?php echo htmlspecialchars($product['id']); ?>">
+                <img src="<?php echo '../' . htmlspecialchars($product['image_url'] ?? 'Images/placeholder.jpg'); ?>" alt="<?php echo htmlspecialchars($product['name']); ?>">
+                <h3><?php echo htmlspecialchars($product['name']); ?></h3>
+                <p>$<?php echo number_format($product['price'], 2); ?></p>
+                <div style="display: flex; gap: 5px; width: 100%;">
+                    <button class="add-to-cart" data-id="<?php echo htmlspecialchars($product['id']); ?>" type="button" style="flex: 1;">Add to Cart</button>
+                    <a href="./Product.php?id=<?php echo htmlspecialchars($product['id']); ?>" style="flex: 1; text-decoration: none;"><button type="button" style="width: 100%; padding: 8px; background: #5757f3; color: white; border: none; border-radius: 4px; cursor: pointer;">View Details</button></a>
+                </div>
+            </div>
+            <?php endforeach; ?>
+        </div>
+
+        <!-- Supplements part -->
+        <h3 id="Supplements">Supplements</h3>
+        <div id="Supplements" class="Supplements">
+            <?php foreach ($productsByCategory['supplements'] ?? [] as $product): ?>
+            <div class="product-card" data-id="<?php echo htmlspecialchars($product['id']); ?>">
+                <img src="<?php echo '../' . htmlspecialchars($product['image_url'] ?? 'Images/placeholder.jpg'); ?>" alt="<?php echo htmlspecialchars($product['name']); ?>">
+                <h3><?php echo htmlspecialchars($product['name']); ?></h3>
+                <p>$<?php echo number_format($product['price'], 2); ?></p>
+                <div style="display: flex; gap: 5px; width: 100%;">
+                    <button class="add-to-cart" data-id="<?php echo htmlspecialchars($product['id']); ?>" type="button" style="flex: 1;">Add to Cart</button>
+                    <a href="./Product.php?id=<?php echo htmlspecialchars($product['id']); ?>" style="flex: 1; text-decoration: none;"><button type="button" style="width: 100%; padding: 8px; background: #5757f3; color: white; border: none; border-radius: 4px; cursor: pointer;">View Details</button></a>
+                </div>
+            </div>
+            <?php endforeach; ?>
+        </div>
+    </div>
+</div>
+
+<script src="../JS/Home.js"></script>
 </body>
 </html>

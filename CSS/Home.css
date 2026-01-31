@@ -1,397 +1,683 @@
-body {
+/* Base Styles */
+* {
     margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
     font-family: Arial, Helvetica, sans-serif;
-    /* Use HomePagebackground.png as a full-page background with a dark overlay for contrast */
     background-image: linear-gradient(rgba(3,8,15,0.45), rgba(3,8,15,0.45)), url("../Images/HomePagebackground.png");
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-    padding-top: 60px;
+    background-attachment: fixed;
+    min-height: 100vh;
+    padding-top: 80px;
+    color: #f8fafc;
 }
 
-/* enable smooth scrolling on the Home page for in-page navigation */
-html { scroll-behavior: smooth; }
+html {
+    scroll-behavior: smooth;
+}
 
-/* ensure fixed nav doesn't cover target headings when jumping via anchors */
+/* Section IDs for smooth scrolling */
 #Proteins, #Pre, #Vitamins, #Supplements {
-    scroll-margin-top: 110px;
+    scroll-margin-top: 120px;
 }
 
-/* small highlight animation for user feedback when sliding to a section */
-.flash-target {
-    animation: flash-target 900ms ease forwards;
-}
+/* Flash Animation */
 @keyframes flash-target {
     0% { background-color: rgba(87,87,243,0.12); }
     100% { background-color: transparent; }
 }
 
+.flash-target {
+    animation: flash-target 900ms ease forwards;
+}
+
+/* Navigation Bar */
 .nav {
-    /* solid, opaque nav — completely blocks view behind it */
     background: rgba(6,10,18,0.98);
     color: #f8fafc;
-    overflow: hidden;
     display: flex;
-    justify-content: space-around;
+    justify-content: space-between;
     align-items: center;
-    padding: 10px 20px;
+    padding: 12px 24px;
     box-sizing: border-box;
-}
-/* animate nav sliding when hidden by JS */
-.nav {
-    transition: transform .28s cubic-bezier(.2,.9,.2,1), box-shadow .18s ease;
-    will-change: transform;
-}
-.nav.hidden {
-    transform: translateY(-120%);
-    box-shadow: none;
-}
-/* Position the site nav at the top so it's consistent across pages (Account, Home, etc.).
-    Make it fixed to avoid it being pushed down by page padding; avoid overlapping
-    the page content by adding top margin to the immediate content siblings. */
-.nav {
     position: fixed;
     top: 0;
     left: 0;
     right: 0;
     z-index: 1000;
+    transition: transform .28s cubic-bezier(.2,.9,.2,1), box-shadow .18s ease;
+    will-change: transform;
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(255,255,255,0.06);
 }
 
-/* For pages where the header is followed by a main content container like
-   `.profile-container` or `.Main`, ensure they are pushed below the fixed nav. */
-.nav + .profile-container,
-.nav + .Main,
-header + .profile-container,
-header + .Main {
-    margin-top: 96px; /* nav height + small gap; adjust if you change nav padding */
+.nav.hidden {
+    transform: translateY(-120%);
+    box-shadow: none;
 }
+
 #logo {
     width: 100px;
-    margin: 0;
-    /* indicate the logo is interactive (click/tapable) */
+    height: auto;
     cursor: pointer;
+    transition: transform 0.2s ease;
 }
+
+#logo:hover {
+    transform: scale(1.05);
+}
+
+/* Search Bar */
 .srch {
     display: flex;
     align-items: center;
-    background: #ffffff; /* white search field to contrast with nav */
+    background: #ffffff;
     border-radius: 10px;
-    padding: 6px 10px;
+    padding: 8px 12px;
     width: 360px;
     max-width: 42%;
     box-shadow: 0 4px 18px rgba(2,6,23,0.06);
+    transition: box-shadow 0.2s ease;
 }
+
+.srch:focus-within {
+    box-shadow: 0 6px 26px rgba(2,6,23,0.12);
+}
+
 .srch input[type="text"] {
     border: none;
     outline: none;
-    padding: 6px 8px;
+    padding: 8px;
     width: 100%;
     background: transparent;
     color: #0b1220;
     font-weight: 600;
+    font-size: 14px;
 }
+
+.srch input::placeholder {
+    color: rgba(11,17,32,0.45);
+    font-weight: 500;
+}
+
 .srch button {
-    background-color: transparent;
+    background: transparent;
     border: none;
-    padding: 4px 6px;
+    padding: 4px;
     cursor: pointer;
     display: inline-flex;
     align-items: center;
     justify-content: center;
 }
-.srch button img { width: 20px; height: 20px; display:block; }
-.srch input::placeholder { color: rgba(11,17,32,0.45); font-weight: 500; }
-.srch:focus-within { box-shadow: 0 6px 26px rgba(2,6,23,0.12); }
 
+.srch button img {
+    width: 20px;
+    height: 20px;
+}
+
+/* Navigation Buttons */
 .buttons {
     display: flex;
-    gap: 8px;
+    gap: 10px;
     align-items: center;
 }
-.buttons > button img,
+
+.buttons button,
+.buttons .nav-link {
+    background: transparent;
+    color: #f8fafc;
+    padding: 10px 14px;
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    transition: all 0.2s ease;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.buttons button:hover,
+.buttons .nav-link:hover {
+    background: rgba(87,87,243,0.15);
+    border-color: rgba(87,87,243,0.3);
+    transform: translateY(-2px);
+    color: rgb(87,87,243);
+}
+
+.buttons button img,
 .buttons .icon-link img {
-    /* icons are black in the assets; invert for visibility on dark nav */
     filter: invert(1) brightness(1.4) contrast(1);
-    /* normalize icon sizes so favorites/cart/profile align */
     width: 20px;
     height: 20px;
     display: block;
 }
-.buttons button {
-    background-color: transparent;
-    color: #f8fafc; /* light text for dark overlay */
-    padding: 8px 12px;
-    border: 1px solid rgba(255,255,255,0.06);
-    border-radius: 8px;
-    cursor: pointer;
-    font-size: 14px;
-    font-weight: 700;
-    letter-spacing: 0.02em;
-    transition: background-color .18s ease, transform .12s ease, color .12s ease;
-}
-.buttons button:hover {
-    background: rgba(255,255,255,0.06);
-    transform: translateY(-2px);
-}
-.buttons .nav-link {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    background-color: transparent;
-    color: #f8fafc;
-    padding: 8px 12px;
-    border: 1px solid rgba(255,255,255,0.06);
-    border-radius: 8px;
-    cursor: pointer;
-    font-size: 14px;
-    font-weight: 700;
-    letter-spacing: 0.02em;
-    text-decoration: none;
-    transition: background-color .18s ease, transform .12s ease, color .12s ease;
-}
-.buttons .nav-link:hover {
-    background: rgba(255,255,255,0.06);
-    transform: translateY(-2px);
-    color: rgb(87,87,243);
-}
+
 .buttons .icon-link {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    /* make the anchor visually match the other nav buttons */
-    padding: 8px 12px;
-    margin-top: 0;
-    background-color: transparent;
-    border: 1px solid rgba(255,255,255,0.06);
+    padding: 10px;
+    background: transparent;
+    border: 1px solid rgba(255,255,255,0.08);
     border-radius: 8px;
     cursor: pointer;
-    transition: background-color .18s ease, transform .12s ease, color .12s ease;
+    transition: all 0.2s ease;
 }
+
 .buttons .icon-link:hover {
-    background: rgba(255,255,255,0.06);
+    background: rgba(87,87,243,0.15);
+    border-color: rgba(87,87,243,0.3);
     transform: translateY(-2px);
 }
 
-.buttons button:hover {
-    transition: 500ms;
-    color: rgb(87, 87, 243);
+/* Main Content */
+.Main {
+    width: 100%;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 20px;
 }
 
-.Main{
-    align-self: center;
+/* Intro Section */
+.Intro {
     width: 100%;
-    display: flex;
-    align-items: center;
-    padding: 0;
-    margin: 0;
-    flex-direction: column;
-}
-.Intro{
-    width: 80%;
     height: 500px;
-    background-image: url(/Images/SharkBack.jpg);
+    background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url("../Images/SharkBack.jpg");
     background-size: cover;
+    background-position: center;
     background-repeat: no-repeat;
-    background-position: right;
+    border-radius: 12px;
+    margin-bottom: 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 40px;
+    position: relative;
+    overflow: hidden;
 }
-.Intro h1{
-    margin-left: 30px;
+
+.Intro::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(45deg, rgba(87,87,243,0.1), rgba(139,92,246,0.1));
+    z-index: 1;
+}
+
+.Intro h1,
+.Intro h2,
+.Intro button {
+    position: relative;
+    z-index: 2;
+}
+
+.Intro h1 {
     color: #f8fafc;
-    padding-top: 50px;
     font-size: 48px;
-    letter-spacing: 0.06em;
     font-weight: 800;
+    letter-spacing: 0.06em;
+    margin-bottom: 20px;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
 }
-.Intro h2{
-    margin-left: 30px;
-    color: rgba(248,250,252,0.92);
+
+.Intro h2 {
+    color: rgba(248,250,252,0.95);
     font-size: 24px;
     font-weight: 600;
+    margin-bottom: 30px;
+    line-height: 1.4;
 }
-.Intro button{
-    margin-left: 30px;
+
+.Intro h2 b {
+    color: rgb(87,87,243);
+}
+
+.Intro button {
     border: none;
-    padding: 10px 25px; 
-    border-radius: 5px;
-    background-color: rgb(87, 87, 243);
-    color: white;
-    font-size: large;
-    font-weight: bold;
-}
-.Intro button:hover{
-    background-color: rgb(65, 65, 179);
-}
-
-/* container for product category bars (vertical stack of horizontal bars) */
-.Products{
-    display: flex;
-    flex-direction: column;        
-    gap: 24px;
-    width: 80%;
-    margin-top: 24px;
-}
-
-/* each category bar (Proteins, Pre, Vitamins, Supplements) */
-.Products > div{
-    display: flex;
-    gap: 16px;
-    padding: 12px;
-    align-items: flex-start;
-    overflow-x: auto;              
-    -webkit-overflow-scrolling: touch;
-    background: transparent;
+    padding: 12px 30px;
     border-radius: 8px;
+    background: linear-gradient(135deg, rgb(87,87,243), rgb(139,92,246));
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    width: fit-content;
+    box-shadow: 0 4px 15px rgba(87,87,243,0.3);
 }
-.Products > h3{
-    margin-left: 6px;
-    font-size: 20px;
+
+.Intro button:hover {
+    background: linear-gradient(135deg, rgb(65,65,179), rgb(119,72,216));
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(87,87,243,0.4);
+}
+
+/* Products Section */
+.Products {
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+    width: 100%;
+}
+
+.Products > h3 {
+    font-size: 24px;
     color: #f8fafc;
     font-weight: 800;
     text-transform: uppercase;
     letter-spacing: 0.08em;
-    margin-bottom: 8px;
-    border-left: 4px solid rgba(87,87,243,0.9);
-    padding-left: 10px;
+    margin-bottom: 20px;
+    border-left: 4px solid rgb(87,87,243);
+    padding-left: 15px;
+    background: rgba(87,87,243,0.05);
+    padding: 15px;
+    border-radius: 0 8px 8px 0;
 }
 
-/* product cards inside each category bar */
-.Products > div > div {
-    /* darker translucent product card to fit site aesthetic */
+/* Product Grid */
+.product-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 24px;
+    width: 100%;
+}
+
+/* Product Categories */
+.Proteins,
+.Pre,
+.Vitamins,
+.Supplements {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 20px;
+    padding: 0;
+    align-items: stretch;
+}
+
+/* Product Cards */
+.product-card {
     background: rgba(8,12,20,0.86);
     color: #f8fafc;
-    flex: 0 0 230px;               
-    width: 230px;
-    height: 340px;
-    border-radius: 8px;
-    border: 1px solid rgba(255,255,255,0.04);
-    box-sizing: border-box;
+    border-radius: 12px;
+    border: 1px solid rgba(255,255,255,0.08);
     overflow: hidden;
     display: flex;
     flex-direction: column;
-    align-items: stretch;
-    transition: transform .18s ease, box-shadow .18s ease;
+    transition: all 0.3s ease;
+    position: relative;
+    height: 100%;
 }
-.Products > div > div:hover{
-    transform: translateY(-6px) scale(1.02);
-    box-shadow: 0 12px 40px rgba(0,0,0,0.45);
+
+.product-card:hover {
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: 0 16px 40px rgba(0,0,0,0.4);
+    border-color: rgba(87,87,243,0.3);
 }
-.Products > div > div img{
+
+.product-card img {
     width: 100%;
-    height: 170px;
+    height: 200px;
     object-fit: cover;
     display: block;
+    transition: transform 0.3s ease;
 }
-.Products > div > div h3{
-    margin: 12px 12px 4px 12px;
+
+.product-card:hover img {
+    transform: scale(1.05);
+}
+
+.product-card h3 {
+    margin: 16px 16px 8px 16px;
     font-size: 16px;
     color: #f8fafc;
     font-weight: 700;
-}
-.Products > div > div p{
-    margin: 0 12px 12px 12px;
-    font-size: 15px;
-    color: rgba(248,250,252,0.82);
-    margin-top: auto;
-}
-.Products > div > div button{
-    margin: 12px;
-    padding: 8px 12px;
-    border: none;
-    border-radius: 6px;
-    background-color: rgb(87, 87, 243);
-    color: white;
-    font-size: 14px;
-    cursor: pointer;
-    align-self: center;
+    line-height: 1.4;
+    min-height: 44px;
 }
 
-/* Cart panel styles */
+.product-card p {
+    margin: 0 16px 16px 16px;
+    font-size: 18px;
+    color: rgb(87,87,243);
+    font-weight: 800;
+}
+
+.product-card > div {
+    display: flex;
+    gap: 8px;
+    width: 100%;
+    padding: 0 16px 16px 16px;
+    margin-top: auto;
+    box-sizing: border-box;
+}
+
+.product-card button {
+    padding: 10px;
+    border: none;
+    border-radius: 8px;
+    background: rgb(87,87,243);
+    color: white;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    flex: 1;
+    transition: all 0.2s ease;
+}
+
+.product-card button:hover {
+    background: rgb(65,65,179);
+    transform: translateY(-2px);
+}
+
+.product-card a {
+    flex: 1;
+    text-decoration: none;
+}
+
+.product-card a button {
+    width: 100%;
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.2);
+}
+
+.product-card a button:hover {
+    background: rgba(255,255,255,0.15);
+    border-color: rgba(255,255,255,0.3);
+}
+
+/* Cart Panel */
 .cart-panel {
     position: fixed;
-    top: 72px; /* sit under nav */
-    right: 16px;
-    width: 340px;
-    max-width: calc(100% - 32px);
+    top: 80px;
+    right: 20px;
+    width: 380px;
+    max-width: calc(100% - 40px);
     background: rgba(6,10,18,0.98);
     color: #f8fafc;
-    border-radius: 10px;
-    box-shadow: 0 12px 40px rgba(2,6,23,0.45);
-    transform: translateX(110%);
-    transition: transform .26s cubic-bezier(.2,.9,.2,1), opacity .18s ease;
+    border-radius: 12px;
+    box-shadow: 0 12px 40px rgba(2,6,23,0.5);
+    transform: translateX(120%);
+    transition: transform .3s cubic-bezier(.2,.9,.2,1), opacity .2s ease;
     z-index: 1500;
     overflow: hidden;
     display: flex;
     flex-direction: column;
-}
-.cart-panel.open { transform: translateX(0); }
-.cart-panel .cart-header { display:flex; align-items:center; justify-content:space-between; padding:12px 14px; border-bottom:1px solid rgba(255,255,255,0.04); font-weight:700; }
-.cart-panel .cart-body { padding:10px 12px; flex:1; overflow:auto; }
-.cart-panel .cart-items { list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:8px; }
-.cart-panel .cart-item { display:flex; align-items:center; justify-content:space-between; gap:8px; padding:8px; background: rgba(255,255,255,0.02); border-radius:6px; }
-.cart-panel .ci-left { display:flex; flex-direction:column; }
-.cart-panel .ci-name { font-weight:700; }
-.cart-panel .ci-meta { font-size:13px; color:rgba(248,250,252,0.78); }
-.cart-panel .ci-remove { background:transparent; border: none; color: #f8fafc; text-decoration: underline; cursor:pointer; font-size:13px; }
-.cart-panel .cart-footer { padding:12px; border-top:1px solid rgba(255,255,255,0.04); display:flex; align-items:center; justify-content:space-between; gap:8px; }
-.cart-panel .cart-total-amount { font-weight:800; }
-.cart-panel .checkout { padding:8px 12px; border-radius:8px; border:none; background:rgb(87,87,243); color:white; cursor:pointer; }
-
-@media (max-width: 600px) {
-    .cart-panel { right: 8px; left: 8px; width: auto; max-width: none; top: 64px; }
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255,255,255,0.1);
 }
 
-/* optional: nicer scrollbar on WebKit for category bars */
-.Products > div::-webkit-scrollbar { height: 8px; }
-.Products > div::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.12); border-radius: 4px; }
+.cart-panel.open {
+    transform: translateX(0);
+}
 
+.cart-panel .cart-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 20px;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    font-weight: 700;
+    font-size: 18px;
+    background: rgba(87,87,243,0.1);
+}
 
-/* Responsive: keep bars and horizontal scroll behavior on small screens */
-@media (max-width: 600px) {
-    .nav {
-        flex-direction: column;
-        align-items: stretch;
-        gap: 8px;
-        padding: 10px;
-    }
+.cart-panel .cart-close {
+    background: transparent;
+    border: none;
+    color: #f8fafc;
+    font-size: 24px;
+    cursor: pointer;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: all 0.2s ease;
+}
 
-    .srch { width: 100%; order: 1; }
-    .srch input[type="text"] { width: 100%; }
+.cart-panel .cart-close:hover {
+    background: rgba(255,255,255,0.1);
+    transform: rotate(90deg);
+}
 
-    .buttons {
-        justify-content: flex-end;
-        flex-wrap: wrap;
-        gap: 8px;
-        order: 2;
-        padding-right: 8px;
-    }
-    .buttons button { padding: 8px 10px; font-size: 14px; }
+.cart-panel .cart-body {
+    padding: 16px;
+    flex: 1;
+    overflow: auto;
+    max-height: 400px;
+}
 
-    .Main { width: 100%; }
+.cart-panel .cart-items {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
 
+.cart-panel .cart-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 12px;
+    background: rgba(255,255,255,0.03);
+    border-radius: 8px;
+    border: 1px solid rgba(255,255,255,0.05);
+    transition: all 0.2s ease;
+}
+
+.cart-panel .cart-item:hover {
+    background: rgba(255,255,255,0.05);
+    border-color: rgba(87,87,243,0.3);
+}
+
+.cart-panel .ci-left {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+.cart-panel .ci-name {
+    font-weight: 600;
+    font-size: 14px;
+    margin-bottom: 4px;
+}
+
+.cart-panel .ci-meta {
+    font-size: 13px;
+    color: rgba(248,250,252,0.7);
+}
+
+.cart-panel .ci-remove {
+    background: transparent;
+    border: none;
+    color: #f44336;
+    text-decoration: underline;
+    cursor: pointer;
+    font-size: 13px;
+    padding: 4px 8px;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+}
+
+.cart-panel .ci-remove:hover {
+    background: rgba(244,67,54,0.1);
+}
+
+.cart-panel .cart-footer {
+    padding: 20px;
+    border-top: 1px solid rgba(255,255,255,0.1);
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.cart-panel .cart-total {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 18px;
+    font-weight: 700;
+}
+
+.cart-panel .cart-total-amount {
+    color: rgb(87,87,243);
+    font-size: 20px;
+}
+
+.cart-panel .cart-actions {
+    display: flex;
+    gap: 12px;
+}
+
+.cart-panel .checkout {
+    flex: 1;
+    padding: 12px;
+    border-radius: 8px;
+    border: none;
+    background: linear-gradient(135deg, rgb(87,87,243), rgb(139,92,246));
+    color: white;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 15px;
+    transition: all 0.2s ease;
+}
+
+.cart-panel .checkout:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(87,87,243,0.3);
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
     .Intro {
-        width: 100%;
-        height: 300px;
-        background-position: center;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        padding: 20px 10px;
+        height: 400px;
+        padding: 30px;
     }
-    .Intro h1{ margin-left: 0; color: white; padding-top: 0; font-size: 32px; text-align: left; }
-    .Intro h2{ margin-left: 0; color: white; font-size: 18px; text-align: left; }
-    .Intro button{ margin-left: 0; align-self: flex-start; padding: 8px 16px; font-size: 14px; }
+    
+    .Intro h1 {
+        font-size: 36px;
+    }
+    
+    .Intro h2 {
+        font-size: 20px;
+    }
+    
+    .srch {
+        width: 300px;
+    }
+}
 
-    .Products { width: 100%; gap: 18px; padding: 8px; }
-
-    .Products > div {
+@media (max-width: 768px) {
+    body {
+        padding-top: 70px;
+    }
+    
+    .nav {
+        padding: 10px 16px;
+        flex-wrap: wrap;
         gap: 12px;
-        padding: 8px;
     }
+    
+    .srch {
+        width: 100%;
+        max-width: 100%;
+        order: 2;
+        margin-top: 10px;
+    }
+    
+    .buttons {
+        order: 1;
+        flex-wrap: wrap;
+        justify-content: flex-end;
+        flex: 1;
+    }
+    
+    .buttons button,
+    .buttons .nav-link {
+        padding: 8px 12px;
+        font-size: 13px;
+    }
+    
+    .Intro {
+        height: 300px;
+        padding: 20px;
+    }
+    
+    .Intro h1 {
+        font-size: 28px;
+    }
+    
+    .Intro h2 {
+        font-size: 16px;
+    }
+    
+    .Intro button {
+        padding: 10px 20px;
+        font-size: 14px;
+    }
+    
+    .Products > h3 {
+        font-size: 20px;
+        padding: 12px;
+    }
+    
+    .cart-panel {
+        width: calc(100% - 32px);
+        right: 16px;
+        top: 70px;
+    }
+}
 
-    .Products > div > div {
-        flex: 0 0 220px;
-        width: 220px;
-        height: auto;
-        padding: 8px;
+@media (max-width: 480px) {
+    .nav {
+        padding: 8px 12px;
+    }
+    
+    #logo {
+        width: 80px;
+    }
+    
+    .buttons button,
+    .buttons .nav-link {
+        padding: 6px 10px;
+        font-size: 12px;
+    }
+    
+    .Intro {
+        height: 250px;
+        padding: 15px;
+    }
+    
+    .Intro h1 {
+        font-size: 24px;
+    }
+    
+    .Intro h2 {
+        font-size: 14px;
+    }
+    
+    .Products > h3 {
+        font-size: 18px;
+    }
+    
+    .product-grid {
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+        gap: 12px;
     }
 }

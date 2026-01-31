@@ -1,14 +1,9 @@
-// Lightweight instrumentation to help diagnose issues when the account page
-// appears to not be working. This adds a console log and surfaces any
-// initialization errors into the #status element so they're visible in the UI.
-console.log("Account.js loaded");
-
 document.addEventListener("DOMContentLoaded", () => {
+  console.log('Account.js loaded');
+  
   const saveBtn = document.getElementById("saveBtn");
   const statusEl = document.getElementById("status");
-  const avatarInput = document.getElementById("avatarInput");
   const avatar = document.getElementById("avatar");
-  const avatarFileName = document.getElementById("avatarFileName");
   const firstName = document.getElementById("firstName");
   const lastName = document.getElementById("lastName");
   const email = document.getElementById("email");
@@ -18,136 +13,174 @@ document.addEventListener("DOMContentLoaded", () => {
   const contactPref = document.getElementById("contactPref");
   const newsletter = document.getElementById("newsletter");
   const editBtn = document.getElementById("editBtn");
+  const changeAvatar = document.getElementById("changeAvatar");
+  const logoutBtn = document.getElementById("logoutBtn");
+  const avatarInput = document.createElement("input");
+  
+  avatarInput.type = "file";
+  avatarInput.accept = "image/*";
+  avatarInput.style.display = "none";
+  document.body.appendChild(avatarInput);
 
-  const STORAGE_KEY = "apexProfile";
-
-  // small helper to show a temporary status message
-  function showStatus(msg, timeout = 3000) {
+  function showStatus(msg, isError = false) {
     if (!statusEl) return;
     statusEl.textContent = msg;
-    // keep message for `timeout` ms then clear (if unchanged)
-    if (timeout > 0) {
-      setTimeout(() => {
-        if (statusEl.textContent === msg) statusEl.textContent = "";
-      }, timeout);
+    statusEl.style.color = isError ? '#f44336' : '#4CAF50';
+    statusEl.style.background = isError ? 'rgba(244,67,54,0.1)' : 'rgba(76,175,80,0.1)';
+    statusEl.style.borderColor = isError ? 'rgba(244,67,54,0.3)' : 'rgba(76,175,80,0.3)';
+    
+    setTimeout(() => {
+      if (statusEl.textContent === msg) {
+        statusEl.textContent = "";
+        statusEl.style.background = '';
+        statusEl.style.borderColor = '';
+      }
+    }, 3000);
+  }
+
+  async function loadProfile() {
+    try {
+      const response = await fetch('../PHP/account_update.php');
+      const result = await response.json();
+      
+      if (result.success && result.user) {
+        const user = result.user;
+        if (firstName) firstName.value = user.first_name || '';
+        if (lastName) lastName.value = user.last_name || '';
+        if (email) email.value = user.email || '';
+        if (phone) phone.value = user.phone || '';
+        if (address) address.value = user.street_address || '';
+        if (dob) dob.value = user.date_of_birth || '';
+        if (contactPref) contactPref.value = user.contact_preference || 'email';
+        if (newsletter) newsletter.checked = user.newsletter_subscribed || false;
+        
+        if (avatar && user.avatar_url) {
+          const img = avatar.querySelector('img');
+          if (img) img.src = user.avatar_url;
+        }
+      }
+    } catch (error) {
+      console.error('Error loading profile:', error);
+      showStatus('Error loading profile. Please refresh the page.', true);
     }
   }
 
-  function saveProfile() {
+  async function saveProfile() {
     const payload = {
       firstName: firstName ? firstName.value : "",
       lastName: lastName ? lastName.value : "",
       email: email ? email.value : "",
       phone: phone ? phone.value : "",
+      address: address ? address.value : "",
       dob: dob ? dob.value : "",
       contactPref: contactPref ? contactPref.value : "email",
-      newsletter: newsletter ? !!newsletter.checked : false,
-      address: address ? address.value : "",
-      avatar: avatar ? avatar.src : ""
+      newsletter: newsletter ? newsletter.checked : false
     };
+    
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (payload.email && !emailRegex.test(payload.email)) {
+      showStatus("Please enter a valid email address", true);
+      return;
+    }
+    
     try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(payload));
-      showStatus("Profile saved successfully!");
-    } catch (e) {
-      console.error("Failed to save profile:", e);
-      showStatus("Failed to save profile");
-    }
-  }
-
-  // Toggle edit mode: when not editing, inputs are disabled and Save is disabled.
-  function setEditing(enabled) {
-    const controls = [firstName, lastName, email, phone, dob, contactPref, address, newsletter, avatarInput];
-    controls.forEach(c => {
-      if (!c) return;
-      try { c.disabled = !enabled; } catch (e) {}
-    });
-    // style the file label when disabled
-    const fileBtn = document.querySelector('.file-btn');
-    if (fileBtn) {
-      fileBtn.classList.toggle('disabled', !enabled);
-    }
-    if (saveBtn) saveBtn.disabled = !enabled;
-    if (editBtn) editBtn.textContent = enabled ? 'Cancel' : 'Change Information';
-  }
-
-  function loadProfile() {
-    try {
-      const raw = localStorage.getItem(STORAGE_KEY);
-      if (!raw) return;
-      const data = JSON.parse(raw);
-  // Backwards compatibility: older profiles used `shopName` for a single name value
-  if (firstName && data.firstName) firstName.value = data.firstName;
-  else if (firstName && data.shopName) firstName.value = data.shopName;
-  if (lastName && data.lastName) lastName.value = data.lastName;
-  if (email && data.email) email.value = data.email;
-  if (phone && data.phone) phone.value = data.phone;
-  if (dob && data.dob) dob.value = data.dob;
-  if (contactPref && data.contactPref) contactPref.value = data.contactPref;
-  if (newsletter && typeof data.newsletter !== 'undefined') newsletter.checked = !!data.newsletter;
-  if (address && data.address) address.value = data.address;
-  if (avatar && data.avatar) avatar.src = data.avatar;
-    } catch (e) {
-      console.error("Failed to load profile:", e);
-    }
-  }
-
-  // smooth fade when changing avatar src
-  if (avatar) {
-    avatar.style.transition = avatar.style.transition || "opacity 0.25s ease";
-    avatar.style.opacity = "1";
-  }
-
-  if (avatarInput) {
-    avatarInput.addEventListener("change", () => {
-      const file = avatarInput.files[0];
-      if (file) {
-        const reader = new FileReader();
-        reader.onload = () => {
-          // fade out, change src, fade in
-          try {
-            avatar.style.opacity = "0";
-          } catch (e) {}
-          setTimeout(() => {
-            avatar.src = reader.result;
-            // show selected filename in the UI instead of the browser default text
-            try {
-              if (avatarFileName) avatarFileName.textContent = file.name || 'Selected file';
-            } catch (e) {}
-            try {
-              avatar.style.opacity = "1";
-            } catch (e) {}
-          }, 150);
-        };
-        reader.readAsDataURL(file);
+      const response = await fetch('../PHP/account_update.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+      const result = await response.json();
+      
+      if (result.success) {
+        showStatus(result.message || "Profile saved successfully");
+        setEditing(false);
+        
+        try {
+          let profile = JSON.parse(localStorage.getItem('apexProfile') || '{}');
+          profile = { ...profile, ...payload };
+          localStorage.setItem('apexProfile', JSON.stringify(profile));
+        } catch(e) { /* ignore */ }
+      } else {
+        showStatus(result.message || "Error saving profile", true);
       }
-    });
+    } catch (error) {
+      console.error('Error saving profile:', error);
+      showStatus("Error saving profile. Please try again.", true);
+    }
   }
 
-  if (saveBtn) saveBtn.addEventListener("click", saveProfile);
+  async function logout() {
+    if (!confirm('Are you sure you want to sign out?')) {
+        return;
+    }
+    
+    try {
+        if (logoutBtn) {
+            logoutBtn.textContent = 'Signing Out...';
+            logoutBtn.disabled = true;
+        }
+        
+        // Try the AJAX endpoint first
+        const response = await fetch('../PHP/logout_ajax.php');
+        
+        // Check if response is JSON
+        const contentType = response.headers.get('content-type');
+        
+        if (contentType && contentType.includes('application/json')) {
+            const result = await response.json();
+            
+            if (result.success) {
+                // Clear local storage
+                localStorage.removeItem('apexProfile');
+                localStorage.removeItem('cart');
+                localStorage.removeItem('wishlist');
+                
+                showStatus('Signed out successfully. Redirecting...');
+                
+                // Wait a moment then redirect
+                setTimeout(() => {
+                    window.location.href = '../HTML/Home.php';
+                }, 1500);
+            } else {
+                showStatus(result.message || 'Error signing out', true);
+                if (logoutBtn) {
+                    logoutBtn.textContent = 'Sign Out';
+                    logoutBtn.disabled = false;
+                }
+            }
+        } else {
+            // If not JSON, just redirect to regular logout
+            window.location.href = '../PHP/logout.php';
+        }
+    } catch (error) {
+        console.error('Logout error:', error);
+        // Fallback to regular logout
+        window.location.href = '../PHP/logout.php';
+    }
+}
+
 
   if (editBtn) {
     editBtn.addEventListener('click', () => {
       const nowEditing = editBtn.textContent !== 'Change Information';
-      // If currently 'Cancel' -> disable editing; otherwise enable
-      setEditing(nowEditing ? false : true);
-      // If we just cancelled, reload profile to discard changes in the form
-      if (nowEditing) loadProfile();
+      setEditing(!nowEditing);
+      
+      if (!nowEditing) {
+        setEditing(true);
+      } else {
+        loadProfile();
+      }
     });
   }
 
-  // load saved profile (if any)
-  try {
-    loadProfile();
-    // Initialize in non-editing mode: inputs disabled and Save disabled
-    setEditing(false);
-  } catch (initErr) {
-    console.error('Account initialization error:', initErr);
-    // surface a friendly message to the user
-    try {
-      if (statusEl) statusEl.textContent = 'Failed to initialize profile UI: ' + (initErr.message || initErr);
-    } catch (e) {
-      // ignore
-    }
+  if (saveBtn) {
+    saveBtn.addEventListener('click', saveProfile);
   }
-});
 
+  if (logoutBtn) {
+    logoutBtn.addEventListener('click', logout);
+  }
+
+  loadProfile();
+  setEditing(false);
+});
