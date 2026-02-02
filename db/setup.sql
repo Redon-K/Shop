@@ -180,18 +180,6 @@ INSERT INTO categories (name, slug, description) VALUES
 ('Vitamins', 'vitamins', 'Vitamins and mineral supplements'),
 ('Supplements', 'supplements', 'General fitness supplements');
 
--- Insert sample products with more details
-INSERT INTO products (category_id, name, slug, description, short_description, price, stock_quantity, image_url) VALUES
-(1, 'Whey Protein Chocolate', 'whey-protein-chocolate', 'Premium whey protein with rich chocolate flavor. 24g protein per serving, perfect for post-workout recovery.', '24g protein per serving, chocolate flavor', 29.99, 50, '../Images/Prote+na+whey+OPTIMUN+NUTRITION+Gold+Standard+chocolate+908+g-1159974388.jpg'),
-(1, 'Whey Isolate Vanilla', 'whey-isolate-vanilla', 'Pure whey isolate with vanilla flavor. Low in carbs and fat, high in protein content.', 'Pure whey isolate, vanilla flavor', 34.99, 45, '../Images/Prote+na+whey+OPTIMUN+NUTRITION+Gold+Standard+chocolate+908+g-1159974388.jpg'),
-(1, 'Casein Protein', 'casein-protein', 'Slow-release casein protein for overnight muscle recovery. Chocolate flavor.', 'Slow-release protein for overnight recovery', 32.99, 30, '../Images/casein.jpg'),
-(2, 'Pre-Workout Explosion', 'pre-workout-explosion', 'High-energy pre-workout drink with caffeine, beta-alanine, and creatine for intense workouts.', 'Energy and focus booster for workouts', 24.99, 60, '../Images/preworkout1.jpg'),
-(2, 'Nitric Oxide Booster', 'nitric-oxide-booster', 'Enhances blood flow and muscle pumps during training. Improves endurance and performance.', 'Improves blood flow and endurance', 28.99, 40, '../Images/preworkout2.jpg'),
-(3, 'Daily Multivitamins', 'daily-multivitamins', 'Complete daily vitamin supplement with essential vitamins and minerals for overall health.', 'Complete daily vitamin supplement', 19.99, 100, '../Images/multivitamin.jpg'),
-(3, 'Omega-3 Fish Oil', 'omega-3-fish-oil', 'High-quality fish oil with EPA and DHA for heart, brain, and joint health.', 'Essential fatty acids for health', 22.99, 75, '../Images/omega3.jpg'),
-(4, 'Creatine Monohydrate', 'creatine-monohydrate', 'Pure creatine monohydrate powder for strength, power, and muscle growth.', 'Pure creatine for strength and growth', 15.99, 80, '../Images/creatine.jpg'),
-(4, 'BCAAs Recovery', 'bcaas-recovery', 'Branch chain amino acids for muscle recovery and reducing muscle soreness after workouts.', 'Amino acids for muscle recovery', 18.99, 70, '../Images/bcaa.jpg'),
-(4, 'Glutamine Powder', 'glutamine-powder', 'L-Glutamine powder for immune system support and muscle recovery.', 'Glutamine for recovery and immunity', 16.99, 65, '../Images/plant-protein.jpg');
 
 -- Create default admin account (password: admin123)
 INSERT INTO users (email, password, first_name, last_name, is_admin) VALUES
